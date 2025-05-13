@@ -7,7 +7,8 @@ import { toast } from '../hooks/use-toast';
 import { microToStandard } from '../utils/voiUtils';
 
 const WalletConnect = () => {
-  const { providers, activeAccount, isReady, connectedActiveAccounts, activeAddress, disconnect, setActiveAccount } = useWallet();
+  const wallet = useWallet();
+  const { providers, activeAccount, isReady, connectedActiveAccounts, activeAddress } = wallet;
   const [isOpen, setIsOpen] = useState(false);
 
   const handleConnect = async (providerId: string) => {
@@ -39,11 +40,14 @@ const WalletConnect = () => {
   };
 
   const handleDisconnect = async () => {
-    await disconnect();
-    toast({
-      title: "Disconnected",
-      description: "Your wallet has been disconnected.",
-    });
+    // Use the disconnect method from the wallet object
+    if (wallet.disconnect) {
+      await wallet.disconnect();
+      toast({
+        title: "Disconnected",
+        description: "Your wallet has been disconnected.",
+      });
+    }
   };
 
   const formatAddress = (address: string | undefined) => {
@@ -72,9 +76,9 @@ const WalletConnect = () => {
             <X className="h-4 w-4" />
           </Button>
         </div>
-        {activeAccount?.balance && (
+        {activeAccount && (
           <div className="text-pirate-parchment text-sm mt-1">
-            {microToStandard(activeAccount.balance)} VOI
+            {activeAccount.amount ? microToStandard(activeAccount.amount) : 0} VOI
           </div>
         )}
       </div>
@@ -95,7 +99,7 @@ const WalletConnect = () => {
         <div className="mt-2 border border-pirate-gold rounded-md p-3 bg-pirate-navy">
           <div className="text-pirate-gold font-pirata mb-2">Select a Wallet</div>
           <div className="flex flex-col gap-2">
-            {providers?.filter(p => p.isAvailable).map((provider) => (
+            {providers?.map((provider) => (
               <Button 
                 key={provider.metadata.id}
                 onClick={() => handleConnect(provider.metadata.id)}

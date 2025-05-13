@@ -65,7 +65,8 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
   const loseSoundRef = useRef<HTMLAudioElement | null>(null);
   
   // Blockchain integration
-  const { activeAddress, activeAccount } = useWallet();
+  const wallet = useWallet();
+  const { activeAddress, activeAccount } = wallet;
   const { spinSlotMachine, claimWinnings, isProcessing } = useBlockchain();
   
   useEffect(() => {
@@ -95,8 +96,8 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
       return;
     }
     
-    // Check balance
-    if (activeAccount && activeAccount.balance < standardToMicro(betAmount)) {
+    // Check balance - using amount instead of balance
+    if (activeAccount && (activeAccount.amount || 0) < standardToMicro(betAmount)) {
       toast({
         title: "Insufficient Balance",
         description: "You don't have enough VOI to place this bet.",

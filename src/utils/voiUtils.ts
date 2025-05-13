@@ -1,6 +1,5 @@
 
-import algosdk from 'algosdk';
-import { APP_CONFIG, NETWORK, DEFAULT_NETWORK } from '../config/blockchain';
+import { APP_CONFIG, NETWORK, DEFAULT_NETWORK, SYMBOL_MAPPING } from '../config/blockchain';
 
 // Convert microVOI to standard VOI (1 VOI = 1,000,000 microVOI)
 export const microToStandard = (amount: number): number => {
@@ -17,10 +16,20 @@ export const formatVoi = (amount: number): string => {
   return (amount / 1_000_000).toFixed(6);
 };
 
-// Get the Algorand client for the current network
+// Temporary mock implementation until we get algosdk working
 export const getAlgodClient = () => {
-  const network = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK];
-  return new algosdk.Algodv2(network.algodToken, network.algodServer, network.algodPort);
+  console.log('Mock algod client created');
+  return {
+    status: () => ({
+      do: async () => ({ 'last-round': 1000000 })
+    }),
+    getTransactionParams: () => ({
+      do: async () => ({ fee: 1000, firstRound: 1000, lastRound: 2000 })
+    }),
+    sendRawTransaction: () => ({
+      do: async () => ({ txId: 'mock-txn-id' })
+    })
+  };
 };
 
 // Create a bet key from transaction data
@@ -48,70 +57,6 @@ export const parseBetKey = (
   };
 };
 
-// Generate a spin transaction for the slot machine
-export const generateSpinTransaction = async (
-  sender: string,
-  amount: number
-): Promise<algosdk.Transaction> => {
-  const algodClient = getAlgodClient();
-  const suggestedParams = await algodClient.getTransactionParams().do();
-  
-  const appId = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK].slotMachineAppId;
-  
-  // Create payment transaction for the wager
-  const paymentTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-    from: sender,
-    to: algosdk.getApplicationAddress(appId),
-    amount: amount,
-    suggestedParams
-  });
-  
-  // Create application call transaction
-  const appCallTxn = algosdk.makeApplicationCallTxnFromObject({
-    from: sender,
-    appIndex: appId,
-    onComplete: algosdk.OnApplicationComplete.NoOpOC,
-    appArgs: [new Uint8Array(Buffer.from('spin')), algosdk.encodeUint64(APP_CONFIG.appId)],
-    suggestedParams
-  });
-  
-  // Combine transactions
-  algosdk.assignGroupID([paymentTxn, appCallTxn]);
-  
-  return appCallTxn;
-};
-
-// Generate a claim transaction
-export const generateClaimTransaction = async (
-  sender: string,
-  betKey: string
-): Promise<algosdk.Transaction> => {
-  const algodClient = getAlgodClient();
-  const suggestedParams = await algodClient.getTransactionParams().do();
-  
-  // Increase the fee for claim to ensure it's processed quickly
-  suggestedParams.fee = 2000;
-  
-  const appId = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK].slotMachineAppId;
-  const { confirmedRound, index, claimRound } = parseBetKey(betKey);
-  
-  // Create application call transaction for claiming
-  const claimTxn = algosdk.makeApplicationCallTxnFromObject({
-    from: sender,
-    appIndex: appId,
-    onComplete: algosdk.OnApplicationComplete.NoOpOC,
-    appArgs: [
-      new Uint8Array(Buffer.from('claim')),
-      algosdk.encodeUint64(confirmedRound),
-      algosdk.encodeUint64(index),
-      algosdk.encodeUint64(claimRound)
-    ],
-    suggestedParams
-  });
-  
-  return claimTxn;
-};
-
 // Mock function to simulate blockchain result (for testing)
 export const simulateBlockchainResult = (): { symbols: number[]; multiplier: number } => {
   const symbols = [
@@ -132,3 +77,18 @@ export const simulateBlockchainResult = (): { symbols: number[]; multiplier: num
   
   return { symbols, multiplier };
 };
+
+// Mock implementation for generateSpinTransaction
+export const generateSpinTransaction = async (sender: string, amount: number) => {
+  console.log(`Mock spin transaction created for ${sender} with amount ${amount}`);
+  return { type: 'appl' };
+};
+
+// Mock implementation for generateClaimTransaction
+export const generateClaimTransaction = async (sender: string, betKey: string) => {
+  console.log(`Mock claim transaction created for ${sender} with betKey ${betKey}`);
+  return { type: 'appl' };
+};
+
+// Re-export SYMBOL_MAPPING to maintain compatibility
+export { SYMBOL_MAPPING };

@@ -1,5 +1,5 @@
 
-import { PROVIDER_ID, WalletProvider as UseWalletProvider } from '@txnlab/use-wallet';
+import { WalletProvider as UseWalletProvider } from '@txnlab/use-wallet';
 import { ReactNode } from 'react';
 import { NETWORK, DEFAULT_NETWORK } from '../config/blockchain';
 
@@ -10,16 +10,16 @@ type WalletProviderProps = {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   const activeNetwork = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK];
   
+  // Define providers without using PROVIDER_ID enum
   const walletProviders = [
-    { id: PROVIDER_ID.KIBISIS },
-    { id: PROVIDER_ID.LUTE },
-    { id: PROVIDER_ID.DEFLY },
-    { id: PROVIDER_ID.WALLETCONNECT }
+    { id: 'kibisis' },
+    { id: 'lute' },
+    { id: 'defly' },
+    { id: 'walletconnect' }
   ];
 
   return (
     <UseWalletProvider
-      providers={walletProviders}
       nodeConfig={{
         network: activeNetwork.name,
         nodeServer: activeNetwork.algodServer,
