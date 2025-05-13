@@ -20,12 +20,20 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
 
   return (
     <UseWalletProvider
-      nodeConfig={{
+      providers={walletProviders}
+      // Use clientStatic instead of nodeConfig
+      clientStatic={{
         network: activeNetwork.name,
-        nodeServer: activeNetwork.algodServer,
-        nodePort: activeNetwork.algodPort,
-        nodeToken: activeNetwork.algodToken,
-        genesisHash: activeNetwork.genesisHash,
+        algod: {
+          server: activeNetwork.algodServer,
+          port: activeNetwork.algodPort,
+          token: activeNetwork.algodToken,
+        },
+        indexer: {
+          server: activeNetwork.indexerServer || '',
+          port: activeNetwork.indexerPort || '',
+          token: '',
+        },
       }}
     >
       {children}

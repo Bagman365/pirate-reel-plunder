@@ -40,12 +40,26 @@ const WalletConnect = () => {
   };
 
   const handleDisconnect = async () => {
-    // Use the disconnect method from the wallet object
-    if (wallet.disconnect) {
-      await wallet.disconnect();
+    // Since the disconnect method directly from the wallet object isn't available,
+    // find the active provider and use its disconnect method
+    try {
+      const activeProvider = providers?.find(p => 
+        p.isConnected && p.accounts.some(a => a.address === activeAddress)
+      );
+      
+      if (activeProvider) {
+        await activeProvider.disconnect();
+        toast({
+          title: "Disconnected",
+          description: "Your wallet has been disconnected.",
+        });
+      }
+    } catch (error) {
+      console.error("Disconnect error:", error);
       toast({
-        title: "Disconnected",
-        description: "Your wallet has been disconnected.",
+        title: "Disconnect Error",
+        description: "Failed to disconnect wallet. Please try again.",
+        variant: "destructive"
       });
     }
   };
@@ -78,7 +92,8 @@ const WalletConnect = () => {
         </div>
         {activeAccount && (
           <div className="text-pirate-parchment text-sm mt-1">
-            {activeAccount.amount ? microToStandard(activeAccount.amount) : 0} VOI
+            {/* Display balance if available, use custom property access */}
+            {typeof activeAccount.amount === 'number' ? microToStandard(activeAccount.amount) : 0} VOI
           </div>
         )}
       </div>

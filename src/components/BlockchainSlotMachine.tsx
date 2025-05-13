@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { Button } from './ui/button';
 import { toast } from '../hooks/use-toast';
@@ -96,8 +95,11 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
       return;
     }
     
-    // Check balance - using amount instead of balance
-    if (activeAccount && (activeAccount.amount || 0) < standardToMicro(betAmount)) {
+    // Check balance - Type-safe approach handling potential undefined
+    const accountBalance = activeAccount && 'amount' in activeAccount ? 
+      (activeAccount.amount as number || 0) : 0;
+    
+    if (accountBalance < standardToMicro(betAmount)) {
       toast({
         title: "Insufficient Balance",
         description: "You don't have enough VOI to place this bet.",
