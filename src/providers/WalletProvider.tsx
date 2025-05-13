@@ -10,18 +10,8 @@ type WalletProviderProps = {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   const activeNetwork = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK];
   
-  // Define providers without using PROVIDER_ID enum
-  const walletProviders = [
-    { id: 'kibisis' },
-    { id: 'lute' },
-    { id: 'defly' },
-    { id: 'walletconnect' }
-  ];
-
   return (
     <UseWalletProvider
-      providers={walletProviders}
-      // Use clientStatic instead of nodeConfig
       clientStatic={{
         network: activeNetwork.name,
         algod: {
@@ -31,7 +21,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
         },
         indexer: {
           server: activeNetwork.indexerServer || '',
-          port: activeNetwork.indexerPort || '',
+          port: '',  // Use empty string instead of activeNetwork.indexerPort
           token: '',
         },
       }}

@@ -93,7 +93,8 @@ const WalletConnect = () => {
         {activeAccount && (
           <div className="text-pirate-parchment text-sm mt-1">
             {/* Display balance if available, use custom property access */}
-            {typeof activeAccount.amount === 'number' ? microToStandard(activeAccount.amount) : 0} VOI
+            {activeAccount && 'amount' in activeAccount ? 
+              microToStandard(activeAccount.amount as number) : 0} VOI
           </div>
         )}
       </div>
