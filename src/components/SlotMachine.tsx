@@ -6,7 +6,7 @@ import {
   Anchor, 
   Coins, 
   Gem, 
-  TreasureMap, 
+  Map, 
   Skull, 
   Flag, 
   Star
@@ -18,7 +18,7 @@ const SYMBOL_ICONS: Record<string, React.ReactNode> = {
   coin: <Coins className="text-pirate-gold" />,
   anchor: <Anchor className="text-gray-400" />,
   skull: <Skull className="text-white" />,
-  map: <TreasureMap className="text-pirate-parchment" />,
+  map: <Map className="text-pirate-parchment" />,
   gem: <Gem className="text-blue-500" />,
   parrot: <Flag className="text-red-500" />,
   rum: <Star className="text-pirate-gold" />

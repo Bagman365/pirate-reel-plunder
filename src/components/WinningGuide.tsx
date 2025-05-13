@@ -3,7 +3,7 @@ import {
   Anchor, 
   Coins, 
   Gem, 
-  TreasureMap, 
+  Map, 
   Skull, 
   Flag, 
   Star 
@@ -30,7 +30,7 @@ const WinningGuide = () => {
           <span className="text-sm text-pirate-parchment">3x = 75 Gold</span>
         </div>
         <div className="flex items-center gap-2">
-          <TreasureMap className="text-pirate-parchment h-5 w-5" />
+          <Map className="text-pirate-parchment h-5 w-5" />
           <span className="text-sm text-pirate-parchment">3x = Bonus Island</span>
         </div>
         <div className="flex items-center gap-2">
