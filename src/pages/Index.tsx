@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
-import SlotMachine from '../components/SlotMachine';
+import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
 import Scoreboard from '../components/Scoreboard';
 import GameFooter from '../components/GameFooter';
 import WinningGuide from '../components/WinningGuide';
+import WalletConnect from '../components/WalletConnect';
+import WalletProvider from '../providers/WalletProvider';
 
 // Ocean waves background animation
 const OceanBackground = () => (
@@ -52,32 +54,37 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col">
-      {/* Background elements */}
-      <OceanBackground />
-      <ShipSilhouette />
-      
-      {/* Content overlay */}
-      <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
-        {/* Header */}
-        <Header />
+    <WalletProvider>
+      <div className="min-h-screen relative overflow-hidden flex flex-col">
+        {/* Background elements */}
+        <OceanBackground />
+        <ShipSilhouette />
         
-        {/* Main game area */}
-        <main className="flex-1 flex flex-col">
-          {/* Scoreboard */}
-          <Scoreboard coins={coins} />
+        {/* Content overlay */}
+        <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
+          {/* Header */}
+          <Header />
           
-          {/* Slot Machine */}
-          <SlotMachine onWin={handleWin} />
+          {/* Main game area */}
+          <main className="flex-1 flex flex-col">
+            {/* Wallet connection */}
+            <WalletConnect />
+            
+            {/* Scoreboard */}
+            <Scoreboard coins={coins} />
+            
+            {/* Slot Machine */}
+            <BlockchainSlotMachine onWin={handleWin} />
+            
+            {/* Winning combinations guide */}
+            <WinningGuide />
+          </main>
           
-          {/* Winning combinations guide */}
-          <WinningGuide />
-        </main>
-        
-        {/* Footer with navigation */}
-        <GameFooter />
+          {/* Footer with navigation */}
+          <GameFooter />
+        </div>
       </div>
-    </div>
+    </WalletProvider>
   );
 };
 
