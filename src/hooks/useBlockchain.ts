@@ -13,8 +13,8 @@ import {
 import { APP_CONFIG } from '../config/blockchain';
 
 // Mock function to simulate waiting for confirmation
-const waitForConfirmation = async (client: any, txId: string, rounds: number) => {
-  console.log(`Waiting for confirmation of transaction ${txId} for ${rounds} rounds`);
+const waitForConfirmation = async () => {
+  console.log(`Waiting for confirmation`);
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000));
   return true;
@@ -89,8 +89,8 @@ export const useBlockchain = () => {
         description: "Waiting for confirmation on the blockchain...",
       });
       
-      // Wait for confirmation
-      await waitForConfirmation(algodClient, txId.txId, 5);
+      // Wait for confirmation - removing the arguments as per error
+      await waitForConfirmation();
       
       // For demonstration purposes, we'll simulate the blockchain result
       // In a production app, you'd read this from the blockchain events
@@ -159,8 +159,8 @@ export const useBlockchain = () => {
         description: "Processing your winnings...",
       });
       
-      // Wait for confirmation
-      await waitForConfirmation(algodClient, txId.txId, 5);
+      // Wait for confirmation - removing the arguments as per error
+      await waitForConfirmation();
       
       // Remove from pending bets
       setPendingBets(pendingBets.filter(b => b !== betKey));
