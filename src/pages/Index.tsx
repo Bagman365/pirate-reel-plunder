@@ -1,11 +1,81 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
+import { useState, useEffect } from 'react';
+import Header from '../components/Header';
+import SlotMachine from '../components/SlotMachine';
+import Scoreboard from '../components/Scoreboard';
+import GameFooter from '../components/GameFooter';
+import WinningGuide from '../components/WinningGuide';
+
+// Ocean waves background animation
+const OceanBackground = () => (
+  <div className="fixed inset-0 z-0">
+    <div className="absolute inset-0 bg-pirate-navy bg-opacity-90"></div>
+    <div className="absolute bottom-0 left-0 right-0 h-32 bg-pirate-sea opacity-30"></div>
+  </div>
+);
+
+// Ships silhouette in the background
+const ShipSilhouette = () => (
+  <div className="fixed bottom-10 right-5 z-0 opacity-20">
+    <div className="w-40 h-32 bg-black rounded-b-lg"></div>
+    <div className="w-8 h-40 bg-black absolute -top-36 left-16"></div>
+    <div className="w-20 h-10 bg-black absolute -top-28 left-10 rounded-t-full"></div>
+  </div>
+);
+
+// Main game component
 const Index = () => {
+  const [coins, setCoins] = useState<number>(500);
+  const [isGameInitialized, setIsGameInitialized] = useState<boolean>(false);
+  
+  // Initialize game
+  useEffect(() => {
+    // We could load saved game state from localStorage here
+    const savedCoins = localStorage.getItem('pirateSlots_coins');
+    if (savedCoins) {
+      setCoins(parseInt(savedCoins, 10));
+    }
+    
+    setIsGameInitialized(true);
+  }, []);
+  
+  // Save game state when coins change
+  useEffect(() => {
+    if (isGameInitialized) {
+      localStorage.setItem('pirateSlots_coins', coins.toString());
+    }
+  }, [coins, isGameInitialized]);
+  
+  // Handle winning coins
+  const handleWin = (amount: number) => {
+    setCoins(prev => prev + amount);
+  };
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen relative overflow-hidden flex flex-col">
+      {/* Background elements */}
+      <OceanBackground />
+      <ShipSilhouette />
+      
+      {/* Content overlay */}
+      <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
+        {/* Header */}
+        <Header />
+        
+        {/* Main game area */}
+        <main className="flex-1 flex flex-col">
+          {/* Scoreboard */}
+          <Scoreboard coins={coins} />
+          
+          {/* Slot Machine */}
+          <SlotMachine onWin={handleWin} />
+          
+          {/* Winning combinations guide */}
+          <WinningGuide />
+        </main>
+        
+        {/* Footer with navigation */}
+        <GameFooter />
       </div>
     </div>
   );
