@@ -12,14 +12,14 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   
   return (
     <UseWalletProvider
-      clientStatic={{
+      value={{
         network: activeNetwork.name,
-        algod: {
+        algodConfig: {
           server: activeNetwork.algodServer,
           port: activeNetwork.algodPort,
           token: activeNetwork.algodToken
         },
-        indexer: {
+        indexerConfig: {
           server: activeNetwork.indexerServer || '',
           port: activeNetwork.algodPort || '',
           token: activeNetwork.algodToken || ''

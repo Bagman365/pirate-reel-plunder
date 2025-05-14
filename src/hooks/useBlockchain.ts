@@ -89,7 +89,7 @@ export const useBlockchain = () => {
         description: "Waiting for confirmation on the blockchain...",
       });
       
-      // Wait for confirmation with no arguments
+      // Wait for confirmation without any arguments
       await waitForConfirmation();
       
       // For demonstration purposes, we'll simulate the blockchain result
@@ -159,7 +159,7 @@ export const useBlockchain = () => {
         description: "Processing your winnings...",
       });
       
-      // Wait for confirmation with no arguments
+      // Wait for confirmation without any arguments
       await waitForConfirmation();
       
       // Remove from pending bets
