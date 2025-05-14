@@ -7,8 +7,6 @@ import GameFooter from '../components/GameFooter';
 import WinningGuide from '../components/WinningGuide';
 import WalletConnect from '../components/WalletConnect';
 import WalletProvider from '../providers/WalletProvider';
-import PirateShip from '../components/animations/PirateShip';
-import TreasureChest from '../components/animations/TreasureChest';
 
 // Ocean waves background animation
 const OceanBackground = () => (
@@ -18,11 +16,19 @@ const OceanBackground = () => (
   </div>
 );
 
+// Ships silhouette in the background
+const ShipSilhouette = () => (
+  <div className="fixed bottom-10 right-5 z-0 opacity-20">
+    <div className="w-40 h-32 bg-black rounded-b-lg"></div>
+    <div className="w-8 h-40 bg-black absolute -top-36 left-16"></div>
+    <div className="w-20 h-10 bg-black absolute -top-28 left-10 rounded-t-full"></div>
+  </div>
+);
+
 // Main game component
 const Index = () => {
   const [coins, setCoins] = useState<number>(500);
   const [isGameInitialized, setIsGameInitialized] = useState<boolean>(false);
-  const [showChestOpen, setShowChestOpen] = useState<boolean>(false);
   
   // Initialize game
   useEffect(() => {
@@ -45,13 +51,6 @@ const Index = () => {
   // Handle winning coins
   const handleWin = (amount: number) => {
     setCoins(prev => prev + amount);
-    // Open the treasure chest when winning
-    setShowChestOpen(true);
-    
-    // Close the treasure chest after 3 seconds
-    setTimeout(() => {
-      setShowChestOpen(false);
-    }, 3000);
   };
   
   return (
@@ -59,8 +58,7 @@ const Index = () => {
       <div className="min-h-screen relative overflow-hidden flex flex-col">
         {/* Background elements */}
         <OceanBackground />
-        <PirateShip />
-        <TreasureChest isOpen={showChestOpen} />
+        <ShipSilhouette />
         
         {/* Content overlay */}
         <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
