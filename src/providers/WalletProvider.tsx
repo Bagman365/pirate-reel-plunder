@@ -12,7 +12,8 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   
   return (
     <UseWalletProvider
-      value={{
+      providers={[]}
+      nodeConfig={{
         network: activeNetwork.name,
         nodeServer: activeNetwork.algodServer,
         nodePort: activeNetwork.algodPort,
