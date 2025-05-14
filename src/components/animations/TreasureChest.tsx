@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Gold } from 'lucide-react';
+import { Coins } from 'lucide-react';
 
 interface TreasureChestProps {
   isOpen: boolean;
@@ -40,9 +40,9 @@ const TreasureChest = ({ isOpen }: TreasureChestProps) => {
         {coinsVisible && (
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
             <div className="relative">
-              <Gold className="text-pirate-gold animate-bounce" size={16} />
-              <Gold className="absolute -left-4 -top-2 text-pirate-gold animate-bounce" style={{animationDelay: '0.1s'}} size={16} />
-              <Gold className="absolute left-4 -top-1 text-pirate-gold animate-bounce" style={{animationDelay: '0.2s'}} size={16} />
+              <Coins className="text-pirate-gold animate-bounce" size={16} />
+              <Coins className="absolute -left-4 -top-2 text-pirate-gold animate-bounce" style={{animationDelay: '0.1s'}} size={16} />
+              <Coins className="absolute left-4 -top-1 text-pirate-gold animate-bounce" style={{animationDelay: '0.2s'}} size={16} />
             </div>
           </div>
         )}
