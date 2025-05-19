@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { toast } from './use-toast';
-import { useWallet } from '@txnlab/use-wallet';
+import { useWallet } from '@txnlab/use-wallet-react';
 import { standardToMicro } from '../utils/voiUtils';
 
 // Types for slot machine operations

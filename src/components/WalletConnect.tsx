@@ -1,14 +1,13 @@
 
 import { useState } from 'react';
-import { useWallet } from '@txnlab/use-wallet';
+import { useWallet } from '@txnlab/use-wallet-react';
 import { Button } from './ui/button';
 import { Wallet, X } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
 import { microToStandard } from '../utils/voiUtils';
 
 const WalletConnect = () => {
-  const wallet = useWallet();
-  const { providers, activeAccount, isReady, connectedActiveAccounts, activeAddress } = wallet;
+  const { providers, activeAccount, isReady, disconnect, activeAddress } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleConnect = async (providerId: string) => {
@@ -40,20 +39,12 @@ const WalletConnect = () => {
   };
 
   const handleDisconnect = async () => {
-    // Since the disconnect method directly from the wallet object isn't available,
-    // find the active provider and use its disconnect method
     try {
-      const activeProvider = providers?.find(p => 
-        p.isConnected && p.accounts.some(a => a.address === activeAddress)
-      );
-      
-      if (activeProvider) {
-        await activeProvider.disconnect();
-        toast({
-          title: "Disconnected",
-          description: "Your wallet has been disconnected.",
-        });
-      }
+      await disconnect();
+      toast({
+        title: "Disconnected",
+        description: "Your wallet has been disconnected.",
+      });
     } catch (error) {
       console.error("Disconnect error:", error);
       toast({
@@ -92,8 +83,7 @@ const WalletConnect = () => {
         </div>
         {activeAccount && (
           <div className="text-pirate-parchment text-sm mt-1">
-            {/* Display balance if available, use custom property access */}
-            {activeAccount && 'amount' in activeAccount ? 
+            {activeAccount.amount ? 
               microToStandard(activeAccount.amount as number) : 0} VOI
           </div>
         )}
