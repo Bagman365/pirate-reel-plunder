@@ -12,15 +12,17 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   
   return (
     <UseWalletProvider
-      providers={{}}
-      nodeConfig={{
-        network: activeNetwork.name,
-        nodeServer: activeNetwork.algodServer,
-        nodePort: activeNetwork.algodPort,
-        nodeToken: activeNetwork.algodToken,
-        indexerServer: activeNetwork.indexerServer || '',
-        indexerPort: activeNetwork.indexerPort,
-        indexerToken: activeNetwork.algodToken,
+      value={{
+        nodeConfig: {
+          network: activeNetwork.name,
+          nodeServer: activeNetwork.algodServer,
+          nodePort: activeNetwork.algodPort,
+          nodeToken: activeNetwork.algodToken,
+          indexerServer: activeNetwork.indexerServer || '',
+          indexerPort: activeNetwork.algodPort, // Use algodPort as fallback
+          indexerToken: activeNetwork.algodToken,
+        },
+        providers: {},
       }}
     >
       {children}
