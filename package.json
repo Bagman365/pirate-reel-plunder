@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@algorandfoundation/algokit-utils": "^2.3.1",
+    "@blockshake/defly-connect": "^1.1.6",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -43,6 +44,8 @@
     "@tanstack/react-query": "^5.56.2",
     "@txnlab/use-wallet": "^2.1.0",
     "@txnlab/use-wallet-react": "^3.7.2",
+    "@walletconnect/client": "^1.8.0",
+    "algorand-walletconnect-qrcode-modal": "^1.8.0",
     "algosdk": "^2.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -20,7 +20,7 @@ export const NETWORK = {
     algodServer: 'https://testnet-api.voi.nodly.io',
     indexerServer: 'https://testnet-idx.voi.nodly.io',
     algodPort: '',
-    indexerToken: '',
+    indexerPort: '',
     algodToken: '',
     currency: 'VOI',
     genesisHash: 'IXnoWtviVVJW5LGivNFc0Dq14V3kqaXuK2u5OQrdVZo=',

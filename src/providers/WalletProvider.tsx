@@ -1,5 +1,5 @@
 
-import { WalletProvider as UseWalletProvider, PROVIDER_ID } from '@txnlab/use-wallet-react';
+import { WalletProvider as UseWalletProvider } from '@txnlab/use-wallet-react';
 import { ReactNode } from 'react';
 import { NETWORK, DEFAULT_NETWORK } from '../config/blockchain';
 import { PeraWalletConnect } from '@perawallet/connect';
@@ -15,40 +15,48 @@ type WalletProviderProps = {
 export const WalletProvider = ({ children }: WalletProviderProps) => {
   const activeNetwork = NETWORK[DEFAULT_NETWORK as keyof typeof NETWORK];
   
-  const walletProviders = {
-    [PROVIDER_ID.PERA]: {
-      id: PROVIDER_ID.PERA,
+  // Define providers with correct structure for v3.7.2
+  const wallets = [
+    {
+      id: 'pera-wallet',
       name: 'Pera Wallet',
-      connect: async () => new PeraWalletConnect(),
+      icon: 'https://pbs.twimg.com/profile_images/1469735318488293376/AuOdfwvH_400x400.jpg',
+      connector: PeraWalletConnect,
     },
-    [PROVIDER_ID.DEFLY]: {
-      id: PROVIDER_ID.DEFLY,
+    {
+      id: 'defly-wallet',
       name: 'Defly Wallet',
-      connect: async () => new DeflyWalletConnect(),
+      icon: 'https://asa-list.tinyman.org/assets/470842789/icon',
+      connector: DeflyWalletConnect,
     },
-    [PROVIDER_ID.DAFFI]: {
-      id: PROVIDER_ID.DAFFI,
+    {
+      id: 'daffi-wallet',
       name: 'Daffi Wallet',
-      connect: async () => new DaffiWalletConnect(),
+      icon: 'https://play-lh.googleusercontent.com/Mvn9I7Qeya-T6A7CiJSwhsKuYcIZBwJ2RLR0yD0JGGELo0BFTWFdQweAOcMrAVXFGdM=w240-h480-rw',
+      connector: DaffiWalletConnect,
     },
-    [PROVIDER_ID.WALLETCONNECT]: {
-      id: PROVIDER_ID.WALLETCONNECT,
+    {
+      id: 'walletconnect',
       name: 'WalletConnect',
-      connect: async () => 
-        new WalletConnect({ bridge: 'https://bridge.walletconnect.org', qrcodeModal: QRCodeModal }),
-    },
-  };
+      icon: 'https://res.cloudinary.com/wallet-connect/image/upload/v1717605647/Website%20Sockets/Desktop/SocketsD%20Icon%20White%20Dark.svg',
+      connector: WalletConnect,
+      options: {
+        bridge: 'https://bridge.walletconnect.org',
+        qrcodeModal: QRCodeModal,
+      }
+    }
+  ];
   
   return (
     <UseWalletProvider
-      providers={walletProviders}
+      wallets={wallets}
       nodeConfig={{
         network: activeNetwork.name,
         nodeServer: activeNetwork.algodServer,
         nodePort: activeNetwork.algodPort,
         nodeToken: activeNetwork.algodToken,
         indexerServer: activeNetwork.indexerServer || '',
-        indexerPort: activeNetwork.algodPort, // Using algodPort as fallback
+        indexerPort: activeNetwork.indexerPort,
         indexerToken: activeNetwork.algodToken,
       }}
     >

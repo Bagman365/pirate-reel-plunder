@@ -7,22 +7,20 @@ import { toast } from '../hooks/use-toast';
 import { microToStandard } from '../utils/voiUtils';
 
 const WalletConnect = () => {
-  const { providers, activeAccount, isReady, disconnect, activeAddress } = useWallet();
+  const { wallets, activeAccount, activeAddress, connecting, disconnecting, disconnect } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleConnect = async (providerId: string) => {
+  const handleConnect = async (wallet: any) => {
     try {
-      const provider = providers?.find((p) => p.metadata.id === providerId);
-      if (!provider) {
+      if (wallet.connected) {
         toast({
-          title: "Wallet Error",
-          description: `Provider ${providerId} not found`,
-          variant: "destructive"
+          title: "Already Connected",
+          description: `You are already connected to ${wallet.name}`,
         });
         return;
       }
       
-      await provider.connect();
+      await wallet.connect();
       setIsOpen(false);
       toast({
         title: "Connected!",
@@ -60,7 +58,7 @@ const WalletConnect = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  if (!isReady) {
+  if (connecting || disconnecting) {
     return <div className="flex items-center justify-center py-3">Loading wallet...</div>;
   }
 
@@ -83,8 +81,8 @@ const WalletConnect = () => {
         </div>
         {activeAccount && (
           <div className="text-pirate-parchment text-sm mt-1">
-            {activeAccount.amount ? 
-              microToStandard(activeAccount.amount as number) : 0} VOI
+            {activeAccount.amount !== undefined ? 
+              microToStandard(activeAccount.amount) : 0} VOI
           </div>
         )}
       </div>
@@ -105,13 +103,13 @@ const WalletConnect = () => {
         <div className="mt-2 border border-pirate-gold rounded-md p-3 bg-pirate-navy">
           <div className="text-pirate-gold font-pirata mb-2">Select a Wallet</div>
           <div className="flex flex-col gap-2">
-            {providers?.map((provider) => (
+            {wallets?.map((wallet) => (
               <Button 
-                key={provider.metadata.id}
-                onClick={() => handleConnect(provider.metadata.id)}
+                key={wallet.id}
+                onClick={() => handleConnect(wallet)}
                 className="w-full justify-start"
               >
-                {provider.metadata.name}
+                {wallet.name}
               </Button>
             ))}
           </div>

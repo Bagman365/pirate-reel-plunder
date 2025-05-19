@@ -1,9 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
 import GameFooter from '../components/GameFooter';
 import WalletConnect from '../components/WalletConnect';
-import WalletProvider from '../providers/WalletProvider';
 
 // Ocean waves background animation
 const OceanBackground = () => (
@@ -51,31 +51,29 @@ const Index = () => {
   };
   
   return (
-    <WalletProvider>
-      <div className="min-h-screen relative overflow-hidden flex flex-col">
-        {/* Background elements */}
-        <OceanBackground />
-        <ShipSilhouette />
+    <div className="min-h-screen relative overflow-hidden flex flex-col">
+      {/* Background elements */}
+      <OceanBackground />
+      <ShipSilhouette />
+      
+      {/* Content overlay */}
+      <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
+        {/* Header */}
+        <Header />
         
-        {/* Content overlay */}
-        <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
-          {/* Header */}
-          <Header />
+        {/* Main game area */}
+        <main className="flex-1 flex flex-col">
+          {/* Wallet connection */}
+          <WalletConnect />
           
-          {/* Main game area */}
-          <main className="flex-1 flex flex-col">
-            {/* Wallet connection */}
-            <WalletConnect />
-            
-            {/* Slot Machine */}
-            <BlockchainSlotMachine onWin={handleWin} />
-          </main>
-          
-          {/* Footer with navigation */}
-          <GameFooter />
-        </div>
+          {/* Slot Machine */}
+          <BlockchainSlotMachine onWin={handleWin} />
+        </main>
+        
+        {/* Footer with navigation */}
+        <GameFooter />
       </div>
-    </WalletProvider>
+    </div>
   );
 };
 
