@@ -28,11 +28,11 @@ const FloatingTreasure = ({ active, itemCount = 15 }: FloatingTreasureProps) => 
         const itemTypes = ['coin', 'gem', 'chest'];
         const type = itemTypes[Math.floor(Math.random() * itemTypes.length)] as 'coin' | 'gem' | 'chest';
         
-        // Create a floating item
+        // Create a floating item - increase size by 150%
         newItems.push({
           id: Date.now() + i,
           type,
-          size: `${Math.random() * 20 + 15}px`, // Random size between 15-35px
+          size: `${(Math.random() * 20 + 15) * 1.5}px`, // Random size between 22.5-52.5px (150% of 15-35px)
           left: `${Math.random() * 90 + 5}%`, // Random horizontal position
           animationDelay: `${Math.random() * 0.5}s`, // Random delay
           rotation: `${Math.random() * 360}deg`, // Random rotation
@@ -75,8 +75,8 @@ const FloatingTreasure = ({ active, itemCount = 15 }: FloatingTreasureProps) => 
               borderRadius: item.type === 'coin' ? '50%' : '2px',
               animationDelay: item.animationDelay,
               transform: `rotate(${item.rotation})`,
-              boxShadow: item.type === 'gem' ? '0 0 10px rgba(59, 130, 246, 0.7)' : 
-                         item.type === 'coin' ? '0 0 5px rgba(255, 215, 0, 0.7)' : 'none'
+              boxShadow: item.type === 'gem' ? '0 0 15px rgba(59, 130, 246, 0.7)' : // Increased shadow
+                         item.type === 'coin' ? '0 0 8px rgba(255, 215, 0, 0.7)' : 'none'
             }}
           />
         );

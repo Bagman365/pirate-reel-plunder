@@ -36,7 +36,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '0s',
         animationDuration: '15s',
         rotate: '5deg',
-        scale: '0.6'
+        scale: '0.9'  // Increased by 150% from 0.6
       },
       {
         id: 2,
@@ -46,7 +46,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '2s',
         animationDuration: '12s',
         rotate: '-5deg',
-        scale: '0.5'
+        scale: '0.75'  // Increased by 150% from 0.5
       },
       {
         id: 3,
@@ -56,7 +56,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '4s',
         animationDuration: '10s',
         rotate: '0deg',
-        scale: '0.4'
+        scale: '0.6'  // Increased by 150% from 0.4
       },
       // New animated images
       {
@@ -67,7 +67,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '1s',
         animationDuration: '8s',
         rotate: '0deg',
-        scale: '0.5',
+        scale: '0.75',  // Increased by 150% from 0.5
         animationClass: 'animate-swing'
       },
       {
@@ -78,7 +78,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '3s',
         animationDuration: '20s',
         rotate: '-5deg',
-        scale: '0.7',
+        scale: '1.05',  // Increased by 150% from 0.7
         animationClass: 'animate-sail'
       },
       {
@@ -89,7 +89,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '2s',
         animationDuration: '6s',
         rotate: '0deg',
-        scale: '0.4',
+        scale: '0.6',  // Increased by 150% from 0.4
         animationClass: 'animate-pulse-glow'
       }
     ];
@@ -114,7 +114,7 @@ const PirateAnimatedBackground = () => {
           <img 
             src={image.src} 
             alt="Pirate decoration" 
-            className="max-w-[150px] h-auto"
+            className="max-w-[225px] h-auto" // Increased by 150% from 150px
           />
         </div>
       ))}
