@@ -1,74 +1,43 @@
 
 import { useState } from 'react';
-import { useWallet } from '@txnlab/use-wallet-react';
 import { Button } from './ui/button';
-import { Wallet, X } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
-import { microToStandard } from '../utils/voiUtils';
 
 const WalletConnect = () => {
-  const { wallets, activeAccount, activeAddress, connecting, disconnecting, disconnect } = useWallet();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [balance, setBalance] = useState<number>(500); // Start with 500 coins
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleConnect = async (wallet: any) => {
-    try {
-      if (wallet.connected) {
-        toast({
-          title: "Already Connected",
-          description: `You are already connected to ${wallet.name}`,
-        });
-        return;
-      }
-      
-      await wallet.connect();
-      setIsOpen(false);
-      toast({
-        title: "Connected!",
-        description: "Your wallet has been connected successfully.",
-      });
-    } catch (error) {
-      toast({
-        title: "Connection Error",
-        description: "Failed to connect wallet. Please try again.",
-        variant: "destructive"
-      });
-      console.error("Connection error:", error);
-    }
+  const handleConnect = () => {
+    setIsConnected(true);
+    setIsOpen(false);
+    toast({
+      title: "Connected!",
+      description: "Welcome to Pirate Slots!",
+    });
   };
 
-  const handleDisconnect = async () => {
-    try {
-      await disconnect();
-      toast({
-        title: "Disconnected",
-        description: "Your wallet has been disconnected.",
-      });
-    } catch (error) {
-      console.error("Disconnect error:", error);
-      toast({
-        title: "Disconnect Error",
-        description: "Failed to disconnect wallet. Please try again.",
-        variant: "destructive"
-      });
-    }
+  const handleDisconnect = () => {
+    setIsConnected(false);
+    toast({
+      title: "Disconnected",
+      description: "Come back soon, matey!",
+    });
   };
 
-  const formatAddress = (address: string | undefined) => {
-    if (!address) return '';
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const formatAddress = () => {
+    // Generate a fake wallet address for UI purposes
+    return '0xABC1...XYZ9';
   };
 
-  if (connecting || disconnecting) {
-    return <div className="flex items-center justify-center py-3">Loading wallet...</div>;
-  }
-
-  if (activeAddress) {
+  if (isConnected) {
     return (
       <div className="bg-pirate-navy border border-pirate-gold rounded-lg p-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 text-pirate-gold">
             <Wallet className="h-5 w-5" />
-            <span className="font-pirata">{formatAddress(activeAddress)}</span>
+            <span className="font-pirata">{formatAddress()}</span>
           </div>
           <Button 
             variant="ghost" 
@@ -76,15 +45,25 @@ const WalletConnect = () => {
             onClick={handleDisconnect} 
             className="text-red-500 hover:text-red-700"
           >
-            <X className="h-4 w-4" />
+            <span className="sr-only">Disconnect</span>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-4 w-4" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </Button>
         </div>
-        {activeAccount && (
-          <div className="text-pirate-parchment text-sm mt-1">
-            {activeAccount.amount !== undefined ? 
-              microToStandard(activeAccount.amount) : 0} VOI
-          </div>
-        )}
+        <div className="text-pirate-parchment text-sm mt-1">
+          {balance} VOI
+        </div>
       </div>
     );
   }
@@ -103,15 +82,18 @@ const WalletConnect = () => {
         <div className="mt-2 border border-pirate-gold rounded-md p-3 bg-pirate-navy">
           <div className="text-pirate-gold font-pirata mb-2">Select a Wallet</div>
           <div className="flex flex-col gap-2">
-            {wallets?.map((wallet) => (
-              <Button 
-                key={wallet.id}
-                onClick={() => handleConnect(wallet)}
-                className="w-full justify-start"
-              >
-                {wallet.name}
-              </Button>
-            ))}
+            <Button 
+              onClick={handleConnect}
+              className="w-full justify-start"
+            >
+              Pirate Wallet
+            </Button>
+            <Button 
+              onClick={handleConnect}
+              className="w-full justify-start"
+            >
+              Treasure Chest
+            </Button>
           </div>
         </div>
       )}

@@ -1,11 +1,7 @@
 
-// This is a simulated implementation of blockchain interactions
-// In a real application, this would interact with actual blockchain APIs
-
+// This is a simulated implementation without actual blockchain interactions
 import { useState } from 'react';
 import { toast } from './use-toast';
-import { useWallet } from '@txnlab/use-wallet-react';
-import { standardToMicro } from '../utils/voiUtils';
 
 // Types for slot machine operations
 interface SpinResult {
@@ -13,9 +9,6 @@ interface SpinResult {
   symbols: string[];
   multiplier: number;
 }
-
-// Simulated pending bets for demo purposes
-const pendingBets: Record<string, { amount: number; symbols: string[]; multiplier: number }> = {};
 
 // Function to generate a random slot machine outcome
 function generateSlotMachineResult(betAmount: number): SpinResult {
@@ -54,13 +47,6 @@ function generateSlotMachineResult(betAmount: number): SpinResult {
   // Generate a unique bet key
   const betKey = `bet_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   
-  // Store the bet for later claiming
-  pendingBets[betKey] = {
-    amount: betAmount,
-    symbols,
-    multiplier
-  };
-  
   return {
     betKey,
     symbols,
@@ -68,52 +54,45 @@ function generateSlotMachineResult(betAmount: number): SpinResult {
   };
 }
 
-// Simulate blockchain confirmation delay
-const waitForConfirmation = (): Promise<void> => {
+// Simulate delay
+const simulateDelay = (): Promise<void> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 2000); // Simulate 2 second confirmation time
+    }, 1000);
   });
 };
 
-// Hook for blockchain operations
+// Hook for simulated blockchain operations
 const useBlockchain = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const { activeAddress } = useWallet();
   
   // Spin the slot machine
   const spinSlotMachine = async (betAmount: number): Promise<SpinResult | null> => {
-    if (!activeAddress || isProcessing) {
+    if (isProcessing) {
       return null;
     }
     
     setIsProcessing(true);
     
     try {
-      // In a real implementation, this would send a transaction to the blockchain
       toast({
-        title: "Transaction sent!",
-        description: "Waiting for confirmation on the blockchain...",
+        title: "Spinning the reels!",
+        description: "Let's see what fortune awaits ye...",
       });
       
-      // Wait for confirmation
-      await waitForConfirmation();
+      // Simulate delay for spinning animation
+      await simulateDelay();
       
-      // For demonstration purposes, we'll simulate the blockchain result
+      // Generate random result
       const result = generateSlotMachineResult(betAmount);
-      
-      toast({
-        title: "Transaction confirmed!",
-        description: "Your spin results are in!",
-      });
       
       return result;
     } catch (error) {
       console.error("Error spinning slot machine:", error);
       toast({
-        title: "Transaction failed!",
-        description: "There was an error processing your bet.",
+        title: "Spin failed!",
+        description: "There was an error spinning the reels.",
         variant: "destructive",
       });
       return null;
@@ -122,58 +101,33 @@ const useBlockchain = () => {
     }
   };
   
-  // Claim winnings from a previous bet
+  // Claim winnings (simplified version)
   const claimWinnings = async (betKey: string): Promise<boolean> => {
-    if (!activeAddress || isProcessing) {
-      return false;
-    }
-    
-    const bet = pendingBets[betKey];
-    if (!bet) {
-      toast({
-        title: "Invalid bet key!",
-        description: "This bet doesn't exist or has already been claimed.",
-        variant: "destructive",
-      });
-      return false;
-    }
-    
-    if (bet.multiplier <= 0) {
-      toast({
-        title: "No winnings to claim!",
-        description: "This bet did not result in any winnings.",
-        variant: "destructive",
-      });
+    if (isProcessing) {
       return false;
     }
     
     setIsProcessing(true);
     
     try {
-      // In a real implementation, this would send a transaction to the blockchain
       toast({
         title: "Claiming winnings!",
-        description: "Processing your winnings...",
+        description: "Adding treasure to yer chest...",
       });
       
-      // Wait for confirmation
-      await waitForConfirmation();
-      
-      // Remove from pending bets
-      delete pendingBets[betKey];
-      
-      const winAmount = standardToMicro(bet.amount * bet.multiplier) / 1000000;
+      // Simulate delay
+      await simulateDelay();
       
       toast({
         title: "Winnings claimed!",
-        description: `${winAmount} VOI has been added to your wallet!`,
+        description: "Your treasure has been added to your balance!",
       });
       
       return true;
     } catch (error) {
       console.error("Error claiming winnings:", error);
       toast({
-        title: "Transaction failed!",
+        title: "Failed to claim!",
         description: "There was an error claiming your winnings.",
         variant: "destructive",
       });

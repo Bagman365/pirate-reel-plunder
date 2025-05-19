@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
 import GameFooter from '../components/GameFooter';
-import WalletConnect from '../components/WalletConnect';
 
 // Ocean waves background animation
 const OceanBackground = () => (
@@ -29,7 +28,7 @@ const Index = () => {
   
   // Initialize game
   useEffect(() => {
-    // We could load saved game state from localStorage here
+    // Load saved game state from localStorage here
     const savedCoins = localStorage.getItem('pirateSlots_coins');
     if (savedCoins) {
       setCoins(parseInt(savedCoins, 10));
@@ -63,9 +62,6 @@ const Index = () => {
         
         {/* Main game area */}
         <main className="flex-1 flex flex-col">
-          {/* Wallet connection */}
-          <WalletConnect />
-          
           {/* Slot Machine */}
           <BlockchainSlotMachine onWin={handleWin} />
         </main>
