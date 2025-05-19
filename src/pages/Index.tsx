@@ -1,10 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
-import Scoreboard from '../components/Scoreboard';
 import GameFooter from '../components/GameFooter';
-import WinningGuide from '../components/WinningGuide';
 import WalletConnect from '../components/WalletConnect';
 import WalletProvider from '../providers/WalletProvider';
 
@@ -70,14 +67,8 @@ const Index = () => {
             {/* Wallet connection */}
             <WalletConnect />
             
-            {/* Scoreboard */}
-            <Scoreboard coins={coins} />
-            
             {/* Slot Machine */}
             <BlockchainSlotMachine onWin={handleWin} />
-            
-            {/* Winning combinations guide */}
-            <WinningGuide />
           </main>
           
           {/* Footer with navigation */}
