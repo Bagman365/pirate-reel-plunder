@@ -1,91 +1,99 @@
 
+// This is a simulated implementation of blockchain interactions
+// In a real application, this would interact with actual blockchain APIs
+
 import { useState } from 'react';
-import { useWallet } from '@txnlab/use-wallet';
 import { toast } from './use-toast';
-import { 
-  getAlgodClient, 
-  generateSpinTransaction, 
-  generateClaimTransaction,
-  createBetKey,
-  simulateBlockchainResult,
-  SYMBOL_MAPPING
-} from '../utils/voiUtils';
-import { APP_CONFIG } from '../config/blockchain';
+import { useWallet } from '@txnlab/use-wallet';
+import { standardToMicro } from '../utils/voiUtils';
 
-// Mock function to simulate waiting for confirmation
-const waitForConfirmation = async () => {
-  console.log(`Waiting for confirmation of transaction`);
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return true;
+// Types for slot machine operations
+interface SpinResult {
+  betKey: string;
+  symbols: string[];
+  multiplier: number;
+}
+
+// Simulated pending bets for demo purposes
+const pendingBets: Record<string, { amount: number; symbols: string[]; multiplier: number }> = {};
+
+// Function to generate a random slot machine outcome
+function generateSlotMachineResult(betAmount: number): SpinResult {
+  // Symbols that can appear on the reels
+  const possibleSymbols = ['coin', 'anchor', 'skull', 'map', 'gem', 'parrot', 'rum'];
+  
+  // Generate random symbols for each reel
+  const symbols = [
+    possibleSymbols[Math.floor(Math.random() * possibleSymbols.length)],
+    possibleSymbols[Math.floor(Math.random() * possibleSymbols.length)],
+    possibleSymbols[Math.floor(Math.random() * possibleSymbols.length)]
+  ];
+  
+  // Determine if it's a win and the multiplier
+  let multiplier = 0;
+  
+  // Three of a kind - big win
+  if (symbols[0] === symbols[1] && symbols[1] === symbols[2]) {
+    // Different symbols have different values
+    switch (symbols[0]) {
+      case 'coin': multiplier = 5; break;
+      case 'anchor': multiplier = 3; break;
+      case 'skull': multiplier = 4; break;
+      case 'map': multiplier = 7; break;
+      case 'gem': multiplier = 6; break;
+      case 'parrot': multiplier = 5; break;
+      case 'rum': multiplier = 2; break;
+      default: multiplier = 3;
+    }
+  }
+  // Two of a kind - small win
+  else if (symbols[0] === symbols[1] || symbols[1] === symbols[2] || symbols[0] === symbols[2]) {
+    multiplier = 1.5;
+  }
+  
+  // Generate a unique bet key
+  const betKey = `bet_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  
+  // Store the bet for later claiming
+  pendingBets[betKey] = {
+    amount: betAmount,
+    symbols,
+    multiplier
+  };
+  
+  return {
+    betKey,
+    symbols,
+    multiplier
+  };
+}
+
+// Simulate blockchain confirmation delay
+const waitForConfirmation = (): Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 2000); // Simulate 2 second confirmation time
+  });
 };
 
-// Mock function to encode an unsigned transaction
-const encodeUnsignedTransaction = (txn: any) => {
-  return new Uint8Array([1, 2, 3, 4, 5]); // Mock encoded transaction
-};
-
-export const useBlockchain = () => {
-  const { activeAddress, signTransactions } = useWallet();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [pendingBets, setPendingBets] = useState<string[]>([]);
-
-  // Spin the slot machine and place a bet
-  const spinSlotMachine = async (betAmount: number) => {
-    if (!activeAddress || isProcessing) return null;
+// Hook for blockchain operations
+const useBlockchain = () => {
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const { activeAddress } = useWallet();
+  
+  // Spin the slot machine
+  const spinSlotMachine = async (betAmount: number): Promise<SpinResult | null> => {
+    if (!activeAddress || isProcessing) {
+      return null;
+    }
+    
+    setIsProcessing(true);
     
     try {
-      setIsProcessing(true);
-      
-      // Convert to microVOI if needed
-      const microVoiBet = betAmount >= 1 ? betAmount : betAmount * 1_000_000;
-      
-      // Validate bet amount
-      if (microVoiBet < APP_CONFIG.minBet) {
-        toast({
-          title: "Bet Too Small",
-          description: `Minimum bet is ${APP_CONFIG.minBet / 1_000_000} VOI`,
-          variant: "destructive"
-        });
-        return null;
-      }
-      
-      if (microVoiBet > APP_CONFIG.maxBet) {
-        toast({
-          title: "Bet Too Large",
-          description: `Maximum bet is ${APP_CONFIG.maxBet / 1_000_000} VOI`,
-          variant: "destructive"
-        });
-        return null;
-      }
-      
-      // Get current round info
-      const algodClient = getAlgodClient();
-      const status = await algodClient.status().do();
-      const currentRound = status['last-round'];
-      
-      // Generate transaction
-      const txn = await generateSpinTransaction(activeAddress, microVoiBet);
-      
-      // Sign transaction
-      if (!signTransactions) {
-        toast({
-          title: "Wallet Error",
-          description: "Unable to sign transactions. Please reconnect your wallet.",
-          variant: "destructive"
-        });
-        return null;
-      }
-      
-      // Use the mock encoder instead of algosdk
-      const encoded = encodeUnsignedTransaction(txn);
-      const signedTxns = await signTransactions([encoded]);
-      
-      // Submit transaction
-      const txId = await algodClient.sendRawTransaction(signedTxns).do();
-      
+      // In a real implementation, this would send a transaction to the blockchain
       toast({
-        title: "Bet Placed!",
+        title: "Transaction sent!",
         description: "Waiting for confirmation on the blockchain...",
       });
       
@@ -93,33 +101,20 @@ export const useBlockchain = () => {
       await waitForConfirmation();
       
       // For demonstration purposes, we'll simulate the blockchain result
-      // In a production app, you'd read this from the blockchain events
-      const result = simulateBlockchainResult();
+      const result = generateSlotMachineResult(betAmount);
       
-      // Create bet key for claiming later
-      const claimRound = currentRound + 1;
-      const betKey = createBetKey(
-        activeAddress,
-        microVoiBet,
-        currentRound,
-        APP_CONFIG.appId,
-        claimRound
-      );
-      
-      setPendingBets([...pendingBets, betKey]);
-      
-      // Return the symbols for UI display
-      return {
-        symbols: result.symbols.map(s => SYMBOL_MAPPING[s as keyof typeof SYMBOL_MAPPING]),
-        multiplier: result.multiplier,
-        betKey
-      };
-    } catch (error) {
-      console.error("Error placing bet:", error);
       toast({
-        title: "Transaction Failed",
-        description: "Failed to place bet. Please try again.",
-        variant: "destructive"
+        title: "Transaction confirmed!",
+        description: "Your spin results are in!",
+      });
+      
+      return result;
+    } catch (error) {
+      console.error("Error spinning slot machine:", error);
+      toast({
+        title: "Transaction failed!",
+        description: "There was an error processing your bet.",
+        variant: "destructive",
       });
       return null;
     } finally {
@@ -127,35 +122,37 @@ export const useBlockchain = () => {
     }
   };
   
-  // Claim winnings
-  const claimWinnings = async (betKey: string) => {
-    if (!activeAddress || isProcessing) return false;
+  // Claim winnings from a previous bet
+  const claimWinnings = async (betKey: string): Promise<boolean> => {
+    if (!activeAddress || isProcessing) {
+      return false;
+    }
+    
+    const bet = pendingBets[betKey];
+    if (!bet) {
+      toast({
+        title: "Invalid bet key!",
+        description: "This bet doesn't exist or has already been claimed.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    if (bet.multiplier <= 0) {
+      toast({
+        title: "No winnings to claim!",
+        description: "This bet did not result in any winnings.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    setIsProcessing(true);
     
     try {
-      setIsProcessing(true);
-      
-      // Generate claim transaction
-      const txn = await generateClaimTransaction(activeAddress, betKey);
-      
-      // Sign transaction
-      if (!signTransactions) {
-        toast({
-          title: "Wallet Error",
-          description: "Unable to sign transactions. Please reconnect your wallet.",
-          variant: "destructive"
-        });
-        return false;
-      }
-      
-      const encoded = encodeUnsignedTransaction(txn);
-      const signedTxns = await signTransactions([encoded]);
-      
-      // Submit transaction
-      const algodClient = getAlgodClient();
-      const txId = await algodClient.sendRawTransaction(signedTxns).do();
-      
+      // In a real implementation, this would send a transaction to the blockchain
       toast({
-        title: "Claim Submitted",
+        title: "Claiming winnings!",
         description: "Processing your winnings...",
       });
       
@@ -163,20 +160,22 @@ export const useBlockchain = () => {
       await waitForConfirmation();
       
       // Remove from pending bets
-      setPendingBets(pendingBets.filter(b => b !== betKey));
+      delete pendingBets[betKey];
+      
+      const winAmount = standardToMicro(bet.amount * bet.multiplier) / 1000000;
       
       toast({
-        title: "Winnings Claimed!",
-        description: "The VOI has been added to your wallet.",
+        title: "Winnings claimed!",
+        description: `${winAmount} VOI has been added to your wallet!`,
       });
       
       return true;
     } catch (error) {
       console.error("Error claiming winnings:", error);
       toast({
-        title: "Claim Failed",
-        description: "Failed to claim winnings. Please try again.",
-        variant: "destructive"
+        title: "Transaction failed!",
+        description: "There was an error claiming your winnings.",
+        variant: "destructive",
       });
       return false;
     } finally {
@@ -185,10 +184,9 @@ export const useBlockchain = () => {
   };
   
   return {
-    spinSlotMachine,
-    claimWinnings,
     isProcessing,
-    pendingBets,
+    spinSlotMachine,
+    claimWinnings
   };
 };
 

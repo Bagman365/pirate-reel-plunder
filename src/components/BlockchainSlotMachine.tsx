@@ -8,6 +8,7 @@ import SlotMachineReels from './slot-machine/SlotMachineReels';
 import BetAmountSelector from './slot-machine/BetAmountSelector';
 import SlotMachineControls from './slot-machine/SlotMachineControls';
 import FallingCoins from './slot-machine/FallingCoins';
+import PirateAnimatedBackground from './slot-machine/PirateAnimatedBackground';
 import { generateRandomReels, SYMBOLS } from '../utils/slotMachineUtils';
 import { useSlotMachineAudio } from '../hooks/useSlotMachineAudio';
 
@@ -179,8 +180,11 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
 
   return (
     <div className="relative w-full max-w-md mx-auto">
+      {/* Pirate themed animated background */}
+      <PirateAnimatedBackground />
+      
       {/* Slot Machine Frame */}
-      <div className="border-8 border-pirate-darkwood rounded-lg bg-pirate-navy p-4 shadow-2xl">
+      <div className="relative z-10 border-8 border-pirate-darkwood rounded-lg bg-pirate-navy/80 backdrop-blur-sm p-4 shadow-2xl">
         {/* Machine Header */}
         <div className="bg-pirate-wood rounded-t-lg p-2 mb-4 border-b-4 border-pirate-darkwood">
           <h2 className="text-center font-pirata text-3xl text-pirate-gold pirate-text-shadow">
