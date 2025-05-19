@@ -14,7 +14,7 @@ const Header = () => {
         </div>
       </div>
       <p className="text-center text-pirate-parchment text-sm mt-1 font-medium italic">
-        "Spin the reels. Plunder the gold. Become the legend of the seven blockchains."
+        "Spin the cursed reels, farm that yield, and make off with the on-chain booty."
       </p>
     </header>
   );
