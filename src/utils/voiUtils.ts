@@ -1,5 +1,5 @@
 
-import { APP_CONFIG, NETWORK, DEFAULT_NETWORK, SYMBOL_MAPPING } from '../config/blockchain';
+import { APP_CONFIG, SYMBOL_MAPPING } from '../config/blockchain';
 
 // Convert microVOI to standard VOI (1 VOI = 1,000,000 microVOI)
 export const microToStandard = (amount: number): number => {
