@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { Button } from './ui/button';
 import { toast } from '../hooks/use-toast';
@@ -9,8 +8,10 @@ import {
   Map, 
   Skull, 
   Flag, 
-  Star
+  Star, 
+  Sparkles
 } from 'lucide-react';
+import FloatingTreasure from './slot-machine/FloatingTreasure';
 
 // Constants for the slot machine
 const SYMBOLS = ['coin', 'anchor', 'skull', 'map', 'gem', 'parrot', 'rum'];
@@ -50,6 +51,8 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
   const [results, setResults] = useState<string[]>(['', '', '']);
   const [canSpin, setCanSpin] = useState<boolean>(true);
   const [showWin, setShowWin] = useState<boolean>(false);
+  const [showFloatingTreasure, setShowFloatingTreasure] = useState<boolean>(false);
+  const [winSize, setWinSize] = useState<'small' | 'large' | null>(null);
   const [coins, setCoins] = useState<{ id: number; left: string; animationDelay: string }[]>([]);
   const leverRef = useRef<HTMLDivElement>(null);
   
@@ -98,6 +101,8 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
     setSpinning(true);
     setCanSpin(false);
     setShowWin(false);
+    setShowFloatingTreasure(false);
+    setWinSize(null);
     
     // Generate new reel positions
     const newReels = [getRandomSymbols(), getRandomSymbols(), getRandomSymbols()];
@@ -136,6 +141,8 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
       
       // Show win animations and play sound
       setShowWin(true);
+      setShowFloatingTreasure(true);
+      setWinSize('large');
       
       if (winSoundRef.current) {
         winSoundRef.current.currentTime = 0;
@@ -160,6 +167,7 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
       // Remove coins after animation
       setTimeout(() => {
         setCoins([]);
+        setShowFloatingTreasure(false);
       }, 3000);
     } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
       // Two matching symbols - small win
@@ -167,6 +175,9 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
                             results[1] === results[2] ? results[1] : results[0];
       const winAmount = Math.floor(SYMBOL_POINTS[matchingSymbol] / 3);
       onWin(winAmount);
+      
+      setShowFloatingTreasure(true);
+      setWinSize('small');
       
       if (winSoundRef.current) {
         winSoundRef.current.currentTime = 0;
@@ -178,6 +189,11 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
         description: `${winAmount} gold coins for ye!`,
         duration: 3000
       });
+      
+      // Remove treasure after animation
+      setTimeout(() => {
+        setShowFloatingTreasure(false);
+      }, 3000);
     } else {
       // No match - lose
       if (loseSoundRef.current) {
@@ -196,17 +212,40 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
   
   return (
     <div className="relative w-full max-w-md mx-auto">
+      {/* Floating treasure animation */}
+      <FloatingTreasure 
+        active={showFloatingTreasure} 
+        itemCount={winSize === 'large' ? 25 : 10} 
+      />
+      
       {/* Slot Machine Frame */}
-      <div className="border-8 border-pirate-darkwood rounded-lg bg-pirate-navy p-4 shadow-2xl">
+      <div className="border-8 border-pirate-darkwood rounded-lg bg-pirate-navy p-4 shadow-2xl relative overflow-hidden">
+        {/* Background glow effect for wins */}
+        {showWin && (
+          <div className="absolute inset-0 bg-pirate-gold/10 animate-pulse-glow z-0"></div>
+        )}
+        
+        {/* Sparkles on big wins */}
+        {showWin && winSize === 'large' && (
+          <>
+            <div className="absolute top-5 left-10 text-pirate-gold animate-bounce-subtle">
+              <Sparkles size={20} />
+            </div>
+            <div className="absolute bottom-10 right-10 text-pirate-gold animate-bounce-subtle" style={{ animationDelay: "0.5s" }}>
+              <Sparkles size={20} />
+            </div>
+          </>
+        )}
+        
         {/* Machine Header */}
-        <div className="bg-pirate-wood rounded-t-lg p-2 mb-4 border-b-4 border-pirate-darkwood">
+        <div className="bg-pirate-wood rounded-t-lg p-2 mb-4 border-b-4 border-pirate-darkwood relative z-10">
           <h2 className="text-center font-pirata text-3xl text-pirate-gold pirate-text-shadow">
             Pirate's Fortune
           </h2>
         </div>
         
         {/* Reels Container */}
-        <div className="flex justify-center mb-6 gap-2 bg-black p-2 rounded-lg border-2 border-pirate-gold overflow-hidden">
+        <div className="flex justify-center mb-6 gap-2 bg-black p-2 rounded-lg border-2 border-pirate-gold overflow-hidden relative z-10">
           {reels.map((reel, reelIndex) => (
             <div key={reelIndex} className="relative w-1/3 h-20 overflow-hidden border border-pirate-gold rounded bg-gray-900">
               <div 
@@ -240,7 +279,7 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
         </div>
         
         {/* Lever */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center relative z-10">
           {/* Left side - Lever */}
           <div 
             ref={leverRef}
@@ -255,7 +294,7 @@ const SlotMachine = ({ onWin }: SlotMachineProps) => {
           <Button 
             onClick={pullLever}
             disabled={!canSpin || spinning}
-            className="bg-pirate-gold hover:bg-amber-500 text-pirate-navy font-bold py-2 px-6 rounded border-2 border-pirate-darkwood font-pirata text-xl"
+            className={`bg-pirate-gold hover:bg-amber-500 text-pirate-navy font-bold py-2 px-6 rounded border-2 border-pirate-darkwood font-pirata text-xl ${showWin ? 'animate-pulse' : ''}`}
           >
             {spinning ? "Spinning..." : "SPIN"}
           </Button>

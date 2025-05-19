@@ -104,6 +104,32 @@ export default {
 					'0%': { transform: 'translateY(0px)' },
 					'50%': { transform: 'translateY(-10px)' },
 					'100%': { transform: 'translateY(0px)' }
+				},
+				// New animations
+				'swing': {
+					'0%': { transform: 'rotate(0deg)' },
+					'25%': { transform: 'rotate(5deg)' },
+					'50%': { transform: 'rotate(0deg)' },
+					'75%': { transform: 'rotate(-5deg)' },
+					'100%': { transform: 'rotate(0deg)' }
+				},
+				'sail': {
+					'0%': { transform: 'translateX(0) rotate(0deg)' },
+					'50%': { transform: 'translateX(-30px) rotate(-2deg)' },
+					'100%': { transform: 'translateX(0) rotate(0deg)' }
+				},
+				'pulse-glow': {
+					'0%': { filter: 'drop-shadow(0 0 0px rgba(255, 215, 0, 0))' },
+					'50%': { filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))' },
+					'100%': { filter: 'drop-shadow(0 0 0px rgba(255, 215, 0, 0))' }
+				},
+				'bounce-subtle': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
+				},
+				'rotate-slow': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
@@ -112,7 +138,13 @@ export default {
 				'spin-reel': 'spin-reel 0.5s linear infinite',
 				'coin-fall': 'coin-fall 2s linear forwards',
 				'lever-pull': 'lever-pull 0.5s ease-in-out',
-				'float': 'float 3s ease-in-out infinite'
+				'float': 'float 3s ease-in-out infinite',
+				// New animations
+				'swing': 'swing 6s ease-in-out infinite',
+				'sail': 'sail 20s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
+				'bounce-subtle': 'bounce-subtle 3s ease-in-out infinite',
+				'rotate-slow': 'rotate-slow 20s linear infinite'
 			},
 			fontFamily: {
 				'pirata': ['"Pirata One"', 'cursive'],
