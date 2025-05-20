@@ -28,7 +28,18 @@ const PirateAnimatedBackground = () => {
     const mainShipOutline = "/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png";
     
     const backgroundImages: AnimatedImage[] = [
-      // Removed pirate ship image with id: 1
+      // Add new animated pirate ship to the left side
+      {
+        id: 1,
+        src: sailingShip,
+        left: '10%',
+        top: '40%',
+        animationDelay: '0s',
+        animationDuration: '25s',
+        rotate: '0deg',
+        scale: '0.9',
+        animationClass: 'animate-sail-horizontal'
+      },
       {
         id: 2,
         src: pirateSwinging,

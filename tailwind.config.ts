@@ -118,6 +118,10 @@ export default {
 					'50%': { transform: 'translateX(-30px) rotate(-2deg)' },
 					'100%': { transform: 'translateX(0) rotate(0deg)' }
 				},
+				'sail-horizontal': {
+					'0%': { transform: 'translateX(-100vw) rotate(0deg)' },
+					'100%': { transform: 'translateX(100vw) rotate(0deg)' }
+				},
 				'pulse-glow': {
 					'0%': { filter: 'drop-shadow(0 0 0px rgba(255, 215, 0, 0))' },
 					'50%': { filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.7))' },
@@ -142,6 +146,7 @@ export default {
 				// New animations
 				'swing': 'swing 6s ease-in-out infinite',
 				'sail': 'sail 20s ease-in-out infinite',
+				'sail-horizontal': 'sail-horizontal 60s linear infinite',
 				'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
 				'bounce-subtle': 'bounce-subtle 3s ease-in-out infinite',
 				'rotate-slow': 'rotate-slow 20s linear infinite'
