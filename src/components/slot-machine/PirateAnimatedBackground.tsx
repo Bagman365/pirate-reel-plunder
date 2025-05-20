@@ -26,6 +26,7 @@ const PirateAnimatedBackground = () => {
     const pirateRope = "/lovable-uploads/fc671c07-1fbc-4793-a443-7811f75e7c6e.png";
     const sailingShip = "/lovable-uploads/4ccd7821-5395-4b07-b337-34b5f9b53a99.png";
     const pirateSymbol = "/lovable-uploads/502363b9-38cb-4138-b4ef-cf0b6c6838bb.png";
+    const mainShipOutline = "/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png";
     
     const backgroundImages: AnimatedImage[] = [
       {
@@ -36,7 +37,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '0s',
         animationDuration: '15s',
         rotate: '5deg',
-        scale: '0.9'  // Increased by 150% from 0.6
+        scale: '0.9'
       },
       {
         id: 2,
@@ -46,7 +47,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '2s',
         animationDuration: '12s',
         rotate: '-5deg',
-        scale: '0.75'  // Increased by 150% from 0.5
+        scale: '0.75'
       },
       {
         id: 3,
@@ -56,7 +57,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '4s',
         animationDuration: '10s',
         rotate: '0deg',
-        scale: '0.6'  // Increased by 150% from 0.4
+        scale: '0.6'
       },
       // New animated images
       {
@@ -67,7 +68,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '1s',
         animationDuration: '8s',
         rotate: '0deg',
-        scale: '0.75',  // Increased by 150% from 0.5
+        scale: '0.75',
         animationClass: 'animate-swing'
       },
       {
@@ -78,7 +79,7 @@ const PirateAnimatedBackground = () => {
         animationDelay: '3s',
         animationDuration: '20s',
         rotate: '-5deg',
-        scale: '1.05',  // Increased by 150% from 0.7
+        scale: '1.05',
         animationClass: 'animate-sail'
       },
       {
@@ -89,8 +90,20 @@ const PirateAnimatedBackground = () => {
         animationDelay: '2s',
         animationDuration: '6s',
         rotate: '0deg',
-        scale: '0.6',  // Increased by 150% from 0.4
+        scale: '0.6',
         animationClass: 'animate-pulse-glow'
+      },
+      // Add the newly uploaded ship outline as a prominent background element
+      {
+        id: 7,
+        src: mainShipOutline,
+        left: '50%',
+        top: '50%',
+        animationDelay: '0s',
+        animationDuration: '30s',
+        rotate: '0deg',
+        scale: '1.5',  // Larger size for this main ship
+        animationClass: 'animate-float'
       }
     ];
     
@@ -99,6 +112,16 @@ const PirateAnimatedBackground = () => {
   
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {/* Add a semi-transparent large ship silhouette in the background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img 
+          src="/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png"
+          alt="Ship silhouette"
+          className="w-full h-full object-contain opacity-10 max-w-3xl"
+          style={{ filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))' }}
+        />
+      </div>
+
       {images.map((image) => (
         <div
           key={image.id}
@@ -114,7 +137,7 @@ const PirateAnimatedBackground = () => {
           <img 
             src={image.src} 
             alt="Pirate decoration" 
-            className="max-w-[225px] h-auto" // Increased by 150% from 150px
+            className="max-w-[225px] h-auto"
           />
         </div>
       ))}

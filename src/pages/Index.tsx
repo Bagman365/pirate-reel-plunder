@@ -14,15 +14,6 @@ const OceanBackground = () => (
   </div>
 );
 
-// Ships silhouette in the background
-const ShipSilhouette = () => (
-  <div className="fixed bottom-10 right-5 z-0 opacity-20 animate-float">
-    <div className="w-40 h-32 bg-black rounded-b-lg"></div>
-    <div className="w-8 h-40 bg-black absolute -top-36 left-16"></div>
-    <div className="w-20 h-10 bg-black absolute -top-28 left-10 rounded-t-full"></div>
-  </div>
-);
-
 // Main game component
 const Index = () => {
   const [isGameInitialized, setIsGameInitialized] = useState<boolean>(false);
@@ -42,7 +33,6 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden flex flex-col">
       {/* Background elements */}
       <OceanBackground />
-      <ShipSilhouette />
       <PirateAnimatedBackground />
       
       {/* Content overlay */}
