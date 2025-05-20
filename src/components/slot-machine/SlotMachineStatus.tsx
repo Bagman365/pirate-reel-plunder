@@ -1,4 +1,6 @@
 
+import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
 import { useWallet } from '../../providers/WalletProvider';
 
 interface SlotMachineStatusProps {
@@ -11,9 +13,12 @@ const SlotMachineStatus = ({ isProcessing, isConnected }: SlotMachineStatusProps
   
   return (
     <>
-      {/* Balance display */}
-      <div className="relative z-10 mb-4 bg-pirate-darkwood/80 rounded-lg p-2 text-center">
+      {/* Status bar with balance and stats link */}
+      <div className="relative z-10 mb-4 bg-pirate-darkwood/80 rounded-lg p-2 flex items-center justify-between">
         <span className="font-pirata text-xl text-pirate-gold">Balance: {balance} VOI</span>
+        <Button variant="link" asChild className="text-pirate-gold p-0 h-auto hover:text-pirate-gold/80">
+          <Link to="/stats">View Stats</Link>
+        </Button>
       </div>
       
       {/* Processing Status */}

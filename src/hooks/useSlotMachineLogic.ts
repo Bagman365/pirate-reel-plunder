@@ -5,6 +5,7 @@ import useBlockchain from './useBlockchain';
 import { useWallet } from '../providers/WalletProvider';
 import { useSlotMachineAudio } from './useSlotMachineAudio';
 import { generateRandomReels, SYMBOLS } from '../utils/slotMachineUtils';
+import { recordGameResult } from '../services/statsService';
 
 export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
   // Initialize with random reels
@@ -42,6 +43,9 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
       const calculatedWinAmount = Math.floor(betAmount * multiplier * 100) / 100;
       setWinAmount(calculatedWinAmount);
       
+      // Record the win in stats
+      recordGameResult(betAmount, calculatedWinAmount);
+      
       // Show win animations and play sound
       setShowWin(true);
       playWinSound();
@@ -49,6 +53,9 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
     } else {
       // No match - lose
       playLoseSound();
+      
+      // Record the loss in stats
+      recordGameResult(betAmount, 0);
       
       toast({
         title: "Arrr, no treasure this time!",

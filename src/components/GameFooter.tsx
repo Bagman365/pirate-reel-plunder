@@ -1,22 +1,24 @@
 
-import { Map, Skull, Star } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import { Button } from './ui/button';
 
 const GameFooter = () => {
   return (
-    <footer className="py-4 mt-6">
-      <div className="flex justify-around">
-        <button className="flex flex-col items-center text-pirate-parchment opacity-70 hover:opacity-100 transition-opacity">
-          <Map className="h-6 w-6" />
-          <span className="text-xs mt-1 font-pirata">Map</span>
-        </button>
-        <button className="flex flex-col items-center text-pirate-gold opacity-70 hover:opacity-100 transition-opacity">
-          <Star className="h-6 w-6" />
-          <span className="text-xs mt-1 font-pirata">Rewards</span>
-        </button>
-        <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100 transition-opacity">
-          <Skull className="h-6 w-6" />
-          <span className="text-xs mt-1 font-pirata">Achievements</span>
-        </button>
+    <footer className="mt-8 pb-6 relative z-10">
+      <div className="bg-pirate-darkwood/80 rounded-lg p-4 border-t border-pirate-gold/30">
+        <div className="flex flex-wrap justify-center gap-4">
+          <Button variant="ghost" asChild className="text-pirate-gold hover:bg-pirate-gold/20 hover:text-pirate-gold">
+            <Link to="/">Home</Link>
+          </Button>
+          <Button variant="ghost" asChild className="text-pirate-gold hover:bg-pirate-gold/20 hover:text-pirate-gold">
+            <Link to="/stats">Stats</Link>
+          </Button>
+        </div>
+        <div className="mt-4 text-center text-xs text-pirate-gold/60">
+          © 2025 Pirate Slots • VOI Blockchain
+        </div>
       </div>
     </footer>
   );
