@@ -18,7 +18,6 @@ const PirateAnimatedBackground = () => {
   
   useEffect(() => {
     // Original background images
-    const pirateShip = "/lovable-uploads/82bef45e-a71c-4a71-8059-92c524f988a7.png";
     const pirateSwinging = "/lovable-uploads/89a339d9-1017-4ae2-819a-a6fae8abf6f1.png";
     const treasureChest = "/lovable-uploads/6d521ae6-3f7e-446d-8a83-d8ca4a9cf045.png";
     
@@ -29,16 +28,7 @@ const PirateAnimatedBackground = () => {
     const mainShipOutline = "/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png";
     
     const backgroundImages: AnimatedImage[] = [
-      {
-        id: 1,
-        src: pirateShip,
-        left: '5%',
-        top: '15%',
-        animationDelay: '0s',
-        animationDuration: '15s',
-        rotate: '5deg',
-        scale: '0.9'
-      },
+      // Removed pirate ship image with id: 1
       {
         id: 2,
         src: pirateSwinging,
