@@ -102,16 +102,8 @@ const PirateAnimatedBackground = () => {
   
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Add a semi-transparent large ship silhouette in the background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <img 
-          src="/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png"
-          alt="Ship silhouette"
-          className="w-full h-full object-contain opacity-10 max-w-3xl"
-          style={{ filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.3))' }}
-        />
-      </div>
-
+      {/* Removed the large semi-transparent ship silhouette */}
+      
       {images.map((image) => (
         <div
           key={image.id}
