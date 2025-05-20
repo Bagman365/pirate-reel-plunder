@@ -2,11 +2,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { toast } from '../hooks/use-toast';
 import useBlockchain from '../hooks/useBlockchain';
+import { useWallet } from '../providers/WalletProvider';
 import SlotMachineReels from './slot-machine/SlotMachineReels';
 import BetAmountSelector from './slot-machine/BetAmountSelector';
 import SlotMachineControls from './slot-machine/SlotMachineControls';
 import FallingCoins from './slot-machine/FallingCoins';
 import PirateAnimatedBackground from './slot-machine/PirateAnimatedBackground';
+import FloatingTreasure from './slot-machine/FloatingTreasure';
 import { generateRandomReels, SYMBOLS } from '../utils/slotMachineUtils';
 import { useSlotMachineAudio } from '../hooks/useSlotMachineAudio';
 
@@ -22,17 +24,21 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
   const [results, setResults] = useState<string[]>(['', '', '']);
   const [canSpin, setCanSpin] = useState<boolean>(true);
   const [showWin, setShowWin] = useState<boolean>(false);
+  const [showFloatingTreasure, setShowFloatingTreasure] = useState<boolean>(false);
   const [coins, setCoins] = useState<{ id: number; left: string; animationDelay: string }[]>([]);
   const [betAmount, setBetAmount] = useState<number>(1); // Default 1 VOI
   const [currentBetKey, setCurrentBetKey] = useState<string | null>(null);
-  const [playerBalance, setPlayerBalance] = useState<number>(500); // Starting balance of 500 coins
+  const [winAmount, setWinAmount] = useState<number>(0);
   
   const leverRef = useRef<HTMLDivElement>(null);
   
   // Audio hooks
   const { playSpinSound, playWinSound, playLoseSound } = useSlotMachineAudio();
   
-  // Blockchain integration (now just simulation)
+  // Wallet integration
+  const { isConnected, balance } = useWallet();
+  
+  // Blockchain integration
   const { spinSlotMachine, claimWinnings, isProcessing } = useBlockchain();
   
   // Update bet amount
@@ -46,18 +52,25 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
   const pullLever = async () => {
     if (!canSpin || spinning || isProcessing) return;
     
-    // Check if player has enough balance
-    if (playerBalance < betAmount) {
+    // Check if wallet is connected
+    if (!isConnected) {
       toast({
-        title: "Insufficient Balance",
-        description: "Ye don't have enough gold to place this bet, matey!",
+        title: "Wallet Not Connected",
+        description: "Connect your wallet to play the slot machine!",
         variant: "destructive"
       });
       return;
     }
     
-    // Deduct bet amount from balance
-    setPlayerBalance(prev => prev - betAmount);
+    // Check if player has enough balance
+    if (balance < betAmount) {
+      toast({
+        title: "Insufficient Balance",
+        description: "Ye don't have enough VOI to place this bet, matey!",
+        variant: "destructive"
+      });
+      return;
+    }
     
     // Pull animation for the lever
     if (leverRef.current) {
@@ -73,9 +86,11 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
     setSpinning(true);
     setCanSpin(false);
     setShowWin(false);
+    setShowFloatingTreasure(false);
     setCurrentBetKey(null);
+    setWinAmount(0);
     
-    // Call for spin result
+    // Call for spin result through blockchain
     const result = await spinSlotMachine(betAmount);
     
     if (!result) {
@@ -117,16 +132,15 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
   // Handle the spin result
   const handleSpinResult = (symbols: string[], multiplier: number) => {
     if (multiplier > 0) {
-      const winAmount = Math.floor(betAmount * multiplier * 100) / 100;
+      const calculatedWinAmount = Math.floor(betAmount * multiplier * 100) / 100;
+      setWinAmount(calculatedWinAmount);
       
-      // Update player balance
-      setPlayerBalance(prev => prev + winAmount);
-      
-      // Trigger win callback
-      onWin(winAmount);
+      // Trigger win callback for UI effects
+      onWin(calculatedWinAmount);
       
       // Show win animations and play sound
       setShowWin(true);
+      setShowFloatingTreasure(true);
       playWinSound();
       
       // Create falling coins animation
@@ -140,13 +154,14 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
       // Show toast with win message
       toast({
         title: "Yarrr! You won!",
-        description: `${winAmount} VOI have been added to yer treasure!`,
+        description: `Claim ${calculatedWinAmount} VOI from the blockchain!`,
         duration: 3000
       });
       
       // Remove coins after animation
       setTimeout(() => {
         setCoins([]);
+        setShowFloatingTreasure(false);
       }, 3000);
     } else {
       // No match - lose
@@ -163,11 +178,12 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
 
   // Claim winnings if available
   const handleClaim = async () => {
-    if (!currentBetKey || isProcessing) return;
+    if (!currentBetKey || isProcessing || winAmount <= 0) return;
     
-    const success = await claimWinnings(currentBetKey);
+    const success = await claimWinnings(currentBetKey, winAmount);
     if (success) {
       setCurrentBetKey(null);
+      setWinAmount(0);
     }
   };
 
@@ -176,13 +192,21 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
       {/* Pirate themed animated background */}
       <PirateAnimatedBackground />
       
-      {/* Balance display */}
+      {/* Floating treasure animation */}
+      <FloatingTreasure active={showFloatingTreasure} itemCount={winAmount > betAmount * 3 ? 25 : 10} />
+      
+      {/* Balance display - Now using wallet balance */}
       <div className="relative z-10 mb-4 bg-pirate-darkwood/80 rounded-lg p-2 text-center">
-        <span className="font-pirata text-xl text-pirate-gold">Balance: {playerBalance} VOI</span>
+        <span className="font-pirata text-xl text-pirate-gold">Balance: {balance} VOI</span>
       </div>
       
       {/* Slot Machine Frame */}
       <div className="relative z-10 border-8 border-pirate-darkwood rounded-lg bg-pirate-navy/80 backdrop-blur-sm p-4 shadow-2xl">
+        {/* Background glow effect for wins */}
+        {showWin && (
+          <div className="absolute inset-0 bg-pirate-gold/10 animate-pulse-glow z-0"></div>
+        )}
+        
         {/* Machine Header */}
         <div className="bg-pirate-wood rounded-t-lg p-2 mb-4 border-b-4 border-pirate-darkwood">
           <h2 className="text-center font-pirata text-3xl text-pirate-gold pirate-text-shadow">
@@ -210,17 +234,24 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
           leverRef={leverRef}
           onPullLever={pullLever}
           onClaim={handleClaim}
-          canSpin={canSpin}
+          canSpin={canSpin && isConnected}
           spinning={spinning}
           isProcessing={isProcessing}
-          activeAddress="player"
+          activeAddress={isConnected ? "connected" : undefined}
           currentBetKey={currentBetKey}
         />
 
         {/* Processing Status */}
         {isProcessing && (
           <div className="mt-4 p-2 bg-pirate-darkwood/50 rounded text-center">
-            <span className="text-pirate-gold font-pirata">Processing...</span>
+            <span className="text-pirate-gold font-pirata animate-pulse">Processing Blockchain Transaction...</span>
+          </div>
+        )}
+        
+        {/* Wallet connection notice */}
+        {!isConnected && (
+          <div className="mt-4 p-2 bg-pirate-darkwood/50 rounded text-center">
+            <span className="text-pirate-gold font-pirata">Connect your wallet to play!</span>
           </div>
         )}
       </div>

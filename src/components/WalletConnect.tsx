@@ -3,32 +3,25 @@ import { useState } from 'react';
 import { Button } from './ui/button';
 import { Wallet } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
+import { useWallet } from '../providers/WalletProvider';
 
 const WalletConnect = () => {
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [balance, setBalance] = useState<number>(500); // Start with 500 coins
+  const { isConnected, address, balance, connect, disconnect } = useWallet();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleConnect = () => {
-    setIsConnected(true);
+  const handleConnect = async () => {
+    await connect();
     setIsOpen(false);
-    toast({
-      title: "Connected!",
-      description: "Welcome to Pirate Slots!",
-    });
   };
 
   const handleDisconnect = () => {
-    setIsConnected(false);
-    toast({
-      title: "Disconnected",
-      description: "Come back soon, matey!",
-    });
+    disconnect();
   };
 
   const formatAddress = () => {
-    // Generate a fake wallet address for UI purposes
-    return '0xABC1...XYZ9';
+    if (!address) return '';
+    // Format address to show first 6 and last 4 characters
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
 
   if (isConnected) {

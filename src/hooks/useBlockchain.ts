@@ -1,7 +1,7 @@
 
-// This is a simulated implementation without actual blockchain interactions
 import { useState } from 'react';
 import { toast } from './use-toast';
+import { useWallet } from '../providers/WalletProvider';
 
 // Types for slot machine operations
 interface SpinResult {
@@ -44,7 +44,7 @@ function generateSlotMachineResult(betAmount: number): SpinResult {
     multiplier = 1.5;
   }
   
-  // Generate a unique bet key
+  // Generate a unique bet key - in a real blockchain implementation, this would be a transaction ID
   const betKey = `bet_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   
   return {
@@ -54,17 +54,18 @@ function generateSlotMachineResult(betAmount: number): SpinResult {
   };
 }
 
-// Simulate delay
-const simulateDelay = (): Promise<void> => {
+// Simulate delay like actual blockchain transaction
+const simulateBlockchainDelay = (): Promise<void> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, 1500); // Slightly longer delay to simulate blockchain transaction
   });
 };
 
 // Hook for simulated blockchain operations
 const useBlockchain = () => {
+  const { balance, updateBalance } = useWallet();
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   
   // Spin the slot machine
@@ -73,36 +74,51 @@ const useBlockchain = () => {
       return null;
     }
     
+    // Check if player has sufficient balance
+    if (balance < betAmount) {
+      toast({
+        title: "Insufficient Balance",
+        description: "Not enough VOI to place this bet",
+        variant: "destructive",
+      });
+      return null;
+    }
+    
     setIsProcessing(true);
     
     try {
       toast({
-        title: "Spinning the reels!",
-        description: "Let's see what fortune awaits ye...",
+        title: "Processing Blockchain Transaction",
+        description: "Confirming your bet on the blockchain...",
       });
       
-      // Simulate delay for spinning animation
-      await simulateDelay();
+      // Deduct bet amount from balance
+      updateBalance(-betAmount);
+      
+      // Simulate blockchain transaction delay
+      await simulateBlockchainDelay();
       
       // Generate random result
       const result = generateSlotMachineResult(betAmount);
       
       return result;
     } catch (error) {
-      console.error("Error spinning slot machine:", error);
+      console.error("Error with blockchain transaction:", error);
       toast({
-        title: "Spin failed!",
-        description: "There was an error spinning the reels.",
+        title: "Transaction Failed!",
+        description: "There was an error processing your bet on the blockchain.",
         variant: "destructive",
       });
+      // Refund the bet amount since transaction failed
+      updateBalance(betAmount);
       return null;
     } finally {
       setIsProcessing(false);
     }
   };
   
-  // Claim winnings (simplified version)
-  const claimWinnings = async (betKey: string): Promise<boolean> => {
+  // Claim winnings (simplified version that simulates a blockchain transaction)
+  const claimWinnings = async (betKey: string, winAmount: number): Promise<boolean> => {
     if (isProcessing) {
       return false;
     }
@@ -111,23 +127,26 @@ const useBlockchain = () => {
     
     try {
       toast({
-        title: "Claiming winnings!",
-        description: "Adding treasure to yer chest...",
+        title: "Processing Claim",
+        description: "Claiming winnings on the blockchain...",
       });
       
-      // Simulate delay
-      await simulateDelay();
+      // Simulate blockchain confirmation delay
+      await simulateBlockchainDelay();
+      
+      // Add winnings to balance
+      updateBalance(winAmount);
       
       toast({
-        title: "Winnings claimed!",
-        description: "Your treasure has been added to your balance!",
+        title: "Winnings Claimed!",
+        description: `${winAmount} VOI has been added to your wallet!`,
       });
       
       return true;
     } catch (error) {
       console.error("Error claiming winnings:", error);
       toast({
-        title: "Failed to claim!",
+        title: "Claim Failed",
         description: "There was an error claiming your winnings.",
         variant: "destructive",
       });

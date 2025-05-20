@@ -1,6 +1,5 @@
 
-// This file now contains only configuration for visual elements
-// No actual blockchain interactions
+// Blockchain configuration
 
 // Map of symbols to UI symbols
 export const SYMBOL_MAPPING = {
@@ -13,7 +12,7 @@ export const SYMBOL_MAPPING = {
   6: 'rum'
 };
 
-// Payout multipliers for UI display
+// Payout multipliers for blockchain payouts
 export const PAYOUT_MULTIPLIERS = {
   'coin': 2,
   'anchor': 1.5,
@@ -26,6 +25,19 @@ export const PAYOUT_MULTIPLIERS = {
 
 // App-specific configuration
 export const APP_CONFIG = {
-  minBet: 1, // 1 VOI
+  minBet: 0.1, // 0.1 VOI
   maxBet: 100, // 100 VOI
+  defaultBalance: 500, // Starting balance for new players
+};
+
+// Add blockchain network configuration
+export const BLOCKCHAIN_CONFIG = {
+  chainId: '0xVOI', // Mock chain ID for VOI network
+  chainName: 'VOI Network',
+  nativeCurrency: {
+    name: 'VOI',
+    symbol: 'VOI',
+    decimals: 18
+  },
+  blockExplorerUrl: 'https://voiscan.io'
 };
