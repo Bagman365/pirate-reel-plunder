@@ -11,6 +11,7 @@ interface AnimatedImage {
   rotate: string;
   scale: string;
   animationClass?: string;
+  className?: string;
 }
 
 const PirateAnimatedBackground = () => {
@@ -28,7 +29,7 @@ const PirateAnimatedBackground = () => {
     const mainShipOutline = "/lovable-uploads/c27476fc-30af-410c-9c1d-d5cb378d02cc.png";
     
     const backgroundImages: AnimatedImage[] = [
-      // Add new animated pirate ship to the left side
+      // Add new animated white ship to the left side
       {
         id: 1,
         src: sailingShip,
@@ -38,7 +39,8 @@ const PirateAnimatedBackground = () => {
         animationDuration: '25s',
         rotate: '0deg',
         scale: '0.9',
-        animationClass: 'animate-sail-horizontal'
+        animationClass: 'animate-sail-horizontal',
+        className: 'brightness-200 invert' // This makes the ship white
       },
       {
         id: 2,
@@ -130,7 +132,7 @@ const PirateAnimatedBackground = () => {
           <img 
             src={image.src} 
             alt="Pirate decoration" 
-            className="max-w-[225px] h-auto"
+            className={`max-w-[225px] h-auto ${image.className || ''}`}
           />
         </div>
       ))}
