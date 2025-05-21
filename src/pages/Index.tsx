@@ -38,17 +38,8 @@ const Index = () => {
         
         {/* Main game area with centered content and proper spacing */}
         <main className="flex-1">
-          {/* Game wrapper with three-column layout */}
-          <div className="game-wrapper flex justify-center items-center gap-[100px] px-10 max-w-[1440px] mx-auto">
-            {/* Left side image (only shown on larger screens) */}
-            <div className="side-image left hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
-              <img 
-                src="/lovable-uploads/b760e77d-f657-4f34-a43e-8357f2cb1e73.png" 
-                alt="Pirates with Treasure" 
-                className="w-full h-auto transition-opacity duration-1000 opacity-80"
-              />
-            </div>
-            
+          {/* Game wrapper without side images */}
+          <div className="game-wrapper flex justify-center items-center px-10 max-w-[1440px] mx-auto">
             {/* Center content column with consistent width */}
             <div className="flex flex-col items-center w-full max-w-[480px]">
               {/* Wallet Connection section - matched width with game container */}
@@ -60,15 +51,6 @@ const Index = () => {
               <div className="main-game w-full">
                 <BlockchainSlotMachine onWin={handleWin} />
               </div>
-            </div>
-            
-            {/* Right side image (only shown on larger screens) */}
-            <div className="side-image right hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
-              <img 
-                src="/lovable-uploads/304c2fa2-0cc0-48fb-8ada-9a36bf2c9a5b.png" 
-                alt="Pirate Captain" 
-                className="w-full h-auto transition-opacity duration-1000 opacity-80"
-              />
             </div>
           </div>
         </main>
