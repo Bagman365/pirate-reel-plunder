@@ -12,58 +12,43 @@ const PirateAnimatedBackground = () => {
     setIsVisible(true);
   }, []);
 
-  // Left side image (pirate with coins)
-  const leftImage = "/lovable-uploads/871c999c-f9cc-4007-8d34-a71ebaf0f9c1.png";
-  // Right side image (pirate captain)
-  const rightImage = "/lovable-uploads/d3ed5fde-c751-4ff3-812a-275e528a2bcd.png";
-
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Left side images - 4 copies of the pirate with coins */}
-      <div className="absolute left-0 top-0 bottom-0 hidden md:flex flex-col justify-between py-8">
-        {[...Array(4)].map((_, index) => (
-          <div 
-            key={`left-${index}`}
-            className={`transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
-            style={{ width: '20vw', maxWidth: '250px' }}
-          >
-            <img 
-              src={leftImage}
-              alt={`Pirate Treasure ${index+1}`}
-              className="w-full h-auto"
-            />
-          </div>
-        ))}
+      {/* Left side pirate image - larger and better positioned with padding */}
+      <div 
+        className={`absolute left-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
+        style={{ width: '25vw', maxWidth: '350px' }}
+      >
+        <img 
+          src="/lovable-uploads/e843e5e7-ed11-4afe-bd2d-5e0a849b3c22.png" 
+          alt="Pirate Captain" 
+          className="w-full h-auto"
+        />
       </div>
       
-      {/* Right side images - 3 copies of the pirate captain */}
-      <div className="absolute right-0 top-0 bottom-0 hidden md:flex flex-col justify-between py-10">
-        {[...Array(3)].map((_, index) => (
-          <div 
-            key={`right-${index}`}
-            className={`transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
-            style={{ width: '20vw', maxWidth: '250px' }}
-          >
-            <img 
-              src={rightImage} 
-              alt={`Pirate Captain ${index+1}`}
-              className="w-full h-auto"
-            />
-          </div>
-        ))}
+      {/* Right side slot machine image - larger and better positioned with padding */}
+      <div 
+        className={`absolute right-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
+        style={{ width: '25vw', maxWidth: '350px' }}
+      >
+        <img 
+          src="/lovable-uploads/97409236-4d82-4f80-81e6-b865eea29cb8.png" 
+          alt="Pirate Slot Machine" 
+          className="w-full h-auto"
+        />
       </div>
 
-      {/* Mobile view - smaller versions of both images */}
+      {/* Mobile view - images stacked below if needed */}
       {isMobile && (
         <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-4 pb-4 opacity-30">
           <img 
-            src={leftImage} 
-            alt="Pirate Treasure" 
+            src="/lovable-uploads/e843e5e7-ed11-4afe-bd2d-5e0a849b3c22.png" 
+            alt="Pirate Captain" 
             className="w-20 h-auto"
           />
           <img 
-            src={rightImage} 
-            alt="Pirate Captain" 
+            src="/lovable-uploads/97409236-4d82-4f80-81e6-b865eea29cb8.png" 
+            alt="Pirate Slot Machine" 
             className="w-20 h-auto"
           />
         </div>
