@@ -17,7 +17,7 @@ const Index = () => {
   
   // Handle winning event - only for UI effects, actual balance is managed in useBlockchain hook
   const handleWin = (amount: number) => {
-    // This is now mainly for visual effects and potentially game statistics
+    // This is mainly for visual effects and potentially game statistics
     console.log(`Win event: ${amount} VOI`);
   };
   
@@ -35,13 +35,6 @@ const Index = () => {
         
         {/* Main game area with centered content and proper spacing */}
         <main className="flex-1">
-          {/* Wallet Connection section */}
-          <div className="flex justify-center mb-6">
-            <div className="w-full max-w-md">
-              <WalletConnect />
-            </div>
-          </div>
-          
           {/* Game wrapper with three-column layout */}
           <div className="game-wrapper flex justify-center items-center gap-[100px] px-10 max-w-[1440px] mx-auto">
             {/* Left side image (only shown on larger screens) */}
@@ -53,9 +46,16 @@ const Index = () => {
               />
             </div>
             
-            {/* Center slot machine */}
-            <div className="main-game w-full max-w-md">
-              <BlockchainSlotMachine onWin={handleWin} />
+            <div className="flex flex-col items-center w-full max-w-md">
+              {/* Wallet Connection section - matched width with game container */}
+              <div className="w-full mb-6">
+                <WalletConnect />
+              </div>
+              
+              {/* Center slot machine */}
+              <div className="main-game w-full">
+                <BlockchainSlotMachine onWin={handleWin} />
+              </div>
             </div>
             
             {/* Right side image (only shown on larger screens) */}
