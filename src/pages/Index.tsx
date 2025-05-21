@@ -25,7 +25,6 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden flex flex-col">
       {/* Background with pirate theme */}
       <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
-      <PirateAnimatedBackground />
       
       {/* Content overlay - adjusted spacing with specific max-width for better central focus */}
       <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col py-4">
@@ -35,15 +34,38 @@ const Index = () => {
         </div>
         
         {/* Main game area with centered content and proper spacing */}
-        <main className="flex-1 flex flex-col items-center">
-          {/* Wallet Connection - moved inside main content area with proper spacing */}
-          <div className="w-full max-w-md mb-6">
-            <WalletConnect />
+        <main className="flex-1">
+          {/* Wallet Connection section */}
+          <div className="flex justify-center mb-6">
+            <div className="w-full max-w-md">
+              <WalletConnect />
+            </div>
           </div>
           
-          {/* Slot Machine with max width constraint */}
-          <div className="w-full max-w-md mb-6">
-            <BlockchainSlotMachine onWin={handleWin} />
+          {/* Game wrapper with three-column layout */}
+          <div className="game-wrapper flex justify-center items-center gap-[100px] px-10 max-w-[1440px] mx-auto">
+            {/* Left side image (only shown on larger screens) */}
+            <div className="side-image left hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
+              <img 
+                src="/lovable-uploads/e843e5e7-ed11-4afe-bd2d-5e0a849b3c22.png" 
+                alt="Pirate Captain" 
+                className="w-full h-auto transition-opacity duration-1000 opacity-80"
+              />
+            </div>
+            
+            {/* Center slot machine */}
+            <div className="main-game w-full max-w-md">
+              <BlockchainSlotMachine onWin={handleWin} />
+            </div>
+            
+            {/* Right side image (only shown on larger screens) */}
+            <div className="side-image right hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
+              <img 
+                src="/lovable-uploads/97409236-4d82-4f80-81e6-b865eea29cb8.png" 
+                alt="Pirate Slot Machine" 
+                className="w-full h-auto transition-opacity duration-1000 opacity-80"
+              />
+            </div>
           </div>
         </main>
         
