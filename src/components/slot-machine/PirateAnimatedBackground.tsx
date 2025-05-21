@@ -14,27 +14,27 @@ const PirateAnimatedBackground = () => {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Left side pirate image - 60% larger with animation */}
+      {/* Left side pirate image - larger and better positioned with padding */}
       <div 
         className={`absolute left-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
-        style={{ width: '40vw', maxWidth: '560px' }}
+        style={{ width: '25vw', maxWidth: '350px' }}
       >
         <img 
           src="/lovable-uploads/b760e77d-f657-4f34-a43e-8357f2cb1e73.png" 
           alt="Pirates with Treasure" 
-          className="w-full h-auto animate-float hover:animate-bounce-subtle"
+          className="w-full h-auto"
         />
       </div>
       
-      {/* Right side pirate captain image - 60% larger with animation */}
+      {/* Right side pirate captain image - larger and better positioned with padding */}
       <div 
         className={`absolute right-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
-        style={{ width: '40vw', maxWidth: '560px' }}
+        style={{ width: '25vw', maxWidth: '350px' }}
       >
         <img 
           src="/lovable-uploads/304c2fa2-0cc0-48fb-8ada-9a36bf2c9a5b.png" 
           alt="Pirate Captain" 
-          className="w-full h-auto animate-swing"
+          className="w-full h-auto"
         />
       </div>
 
@@ -44,12 +44,12 @@ const PirateAnimatedBackground = () => {
           <img 
             src="/lovable-uploads/b760e77d-f657-4f34-a43e-8357f2cb1e73.png" 
             alt="Pirates with Treasure" 
-            className="w-32 h-auto animate-float"
+            className="w-20 h-auto"
           />
           <img 
             src="/lovable-uploads/304c2fa2-0cc0-48fb-8ada-9a36bf2c9a5b.png" 
             alt="Pirate Captain" 
-            className="w-32 h-auto animate-swing"
+            className="w-20 h-auto"
           />
         </div>
       )}
