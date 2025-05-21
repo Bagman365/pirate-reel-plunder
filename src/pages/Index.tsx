@@ -43,8 +43,8 @@ const Index = () => {
             {/* Left side image (only shown on larger screens) */}
             <div className="side-image left hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
               <img 
-                src="/lovable-uploads/e843e5e7-ed11-4afe-bd2d-5e0a849b3c22.png" 
-                alt="Pirate Captain" 
+                src="/lovable-uploads/b760e77d-f657-4f34-a43e-8357f2cb1e73.png" 
+                alt="Pirates with Treasure" 
                 className="w-full h-auto transition-opacity duration-1000 opacity-80"
               />
             </div>
@@ -65,8 +65,8 @@ const Index = () => {
             {/* Right side image (only shown on larger screens) */}
             <div className="side-image right hidden md:block" style={{ width: '300px', flexShrink: 0 }}>
               <img 
-                src="/lovable-uploads/97409236-4d82-4f80-81e6-b865eea29cb8.png" 
-                alt="Pirate Slot Machine" 
+                src="/lovable-uploads/304c2fa2-0cc0-48fb-8ada-9a36bf2c9a5b.png" 
+                alt="Pirate Captain" 
                 className="w-full h-auto transition-opacity duration-1000 opacity-80"
               />
             </div>
