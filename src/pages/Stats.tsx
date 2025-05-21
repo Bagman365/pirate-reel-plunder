@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line, Legend, Tooltip } from 'recharts';
 import { useWallet } from '../providers/WalletProvider';
 import { getStats, getChartData, clearStats } from '../services/statsService';
+import PirateAnimatedBackground from '../components/slot-machine/PirateAnimatedBackground';
 
 const chartConfig = {
   wins: {
@@ -77,12 +78,15 @@ const Stats = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pirate-navy to-pirate-navy/90 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-pirate-navy to-pirate-navy/90 text-white relative">
+      {/* Background pirate image */}
+      <PirateAnimatedBackground image="/lovable-uploads/bfa292e1-ee29-4960-a2cf-f818d1a83ed5.png" />
+      
       {/* Background effects */}
-      <div className="fixed inset-0 bg-gradient-to-b from-pirate-navy to-pirate-navy/90 bg-opacity-90 z-0"></div>
+      <div className="fixed inset-0 bg-gradient-to-b from-pirate-navy to-pirate-navy/90 bg-opacity-60 z-5"></div>
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-pirate-sea opacity-30 animate-sail z-0"></div>
       
-      <div className="container relative z-10 max-w-4xl mx-auto px-4 py-12">
+      <div className="container relative z-20 max-w-4xl mx-auto px-4 py-12">
         <header className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-4xl font-pirata text-pirate-gold">Pirate Stats</h1>
@@ -236,4 +240,3 @@ const Stats = () => {
 };
 
 export default Stats;
-

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useIsMobile } from '../../hooks/use-mobile';
 
 // Background component with the pirate treasure image spanning the full background
-const PirateAnimatedBackground = () => {
+const PirateAnimatedBackground = ({ image = "/lovable-uploads/0ea1aacf-d873-4032-a6aa-e8fa6f8106cd.png" }) => {
   const isMobile = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -22,8 +22,8 @@ const PirateAnimatedBackground = () => {
         }}
       >
         <img 
-          src="/lovable-uploads/0ea1aacf-d873-4032-a6aa-e8fa6f8106cd.png" 
-          alt="Pirates with Treasure" 
+          src={image} 
+          alt="Pirates Background" 
           className="w-full h-full object-cover"
         />
       </div>
