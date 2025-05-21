@@ -85,7 +85,7 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
         {/* Machine Header */}
         <div className="bg-pirate-wood rounded-t-lg p-2 mb-4 border-b-4 border-pirate-darkwood">
           <h2 className="text-center font-pirata text-3xl text-pirate-gold pirate-text-shadow">
-            Pirate Slots
+            Pirate Plunder
           </h2>
         </div>
         

@@ -8,7 +8,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <Anchor className="h-8 w-8 text-pirate-gold" />
           <h1 className="font-pirata text-4xl text-pirate-gold pirate-text-shadow">
-            Pirate Slots
+            Pirate Plunder
           </h1>
           <Anchor className="h-8 w-8 text-pirate-gold" />
         </div>
