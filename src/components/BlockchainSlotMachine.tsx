@@ -5,7 +5,6 @@ import SlotMachineReels from './slot-machine/SlotMachineReels';
 import BetAmountSelector from './slot-machine/BetAmountSelector';
 import SlotMachineControls from './slot-machine/SlotMachineControls';
 import WinAnimationHandler from './slot-machine/WinAnimationHandler';
-import PirateAnimatedBackground from './slot-machine/PirateAnimatedBackground';
 import SlotMachineStatus from './slot-machine/SlotMachineStatus';
 
 interface BlockchainSlotMachineProps {
@@ -62,9 +61,6 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
 
   return (
     <div className="relative w-full max-w-md mx-auto">
-      {/* Pirate themed animated background */}
-      <PirateAnimatedBackground />
-      
       {/* Win animations handler */}
       <WinAnimationHandler 
         showWin={showWin} 

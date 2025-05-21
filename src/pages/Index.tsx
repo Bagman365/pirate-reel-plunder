@@ -6,14 +6,6 @@ import WalletConnect from '../components/WalletConnect';
 import GameFooter from '../components/GameFooter';
 import PirateAnimatedBackground from '../components/slot-machine/PirateAnimatedBackground';
 
-// Ocean waves background animation
-const OceanBackground = () => (
-  <div className="fixed inset-0 z-0">
-    <div className="absolute inset-0 bg-gradient-to-b from-pirate-navy to-pirate-navy/90 bg-opacity-90"></div>
-    <div className="absolute bottom-0 left-0 right-0 h-32 bg-pirate-sea opacity-30 animate-sail"></div>
-  </div>
-);
-
 // Main game component
 const Index = () => {
   const [isGameInitialized, setIsGameInitialized] = useState<boolean>(false);
@@ -31,9 +23,8 @@ const Index = () => {
   
   return (
     <div className="min-h-screen relative overflow-hidden flex flex-col">
-      {/* Background elements */}
-      <OceanBackground />
-      <PirateAnimatedBackground />
+      {/* Empty background setup */}
+      <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
       
       {/* Content overlay */}
       <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
