@@ -5,6 +5,7 @@ import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
 import WalletConnect from '../components/WalletConnect';
 import GameFooter from '../components/GameFooter';
 import RainingCoins from '../components/animations/RainingCoins';
+import PirateAnimatedBackground from '../components/slot-machine/PirateAnimatedBackground';
 
 // Main game component
 const Index = () => {
@@ -25,6 +26,9 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden flex flex-col">
       {/* Background with pirate theme */}
       <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
+      
+      {/* Pirates background image */}
+      <PirateAnimatedBackground />
       
       {/* Raining coins background animation */}
       <RainingCoins />
