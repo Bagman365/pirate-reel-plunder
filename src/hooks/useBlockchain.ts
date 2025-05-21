@@ -45,7 +45,7 @@ function generateSlotMachineResult(betAmount: number): SpinResult {
   }
   
   // Generate a unique bet key - in a real blockchain implementation, this would be a transaction ID
-  const betKey = `bet_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  const betKey = `voi_bet_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   
   return {
     betKey,
@@ -65,12 +65,22 @@ const simulateBlockchainDelay = (): Promise<void> => {
 
 // Hook for simulated blockchain operations
 const useBlockchain = () => {
-  const { balance, updateBalance } = useWallet();
+  const { balance, updateBalance, isConnected } = useWallet();
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   
   // Spin the slot machine
   const spinSlotMachine = async (betAmount: number): Promise<SpinResult | null> => {
     if (isProcessing) {
+      return null;
+    }
+    
+    // Check if wallet is connected
+    if (!isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Ye need to connect yer wallet first, matey!",
+        variant: "destructive",
+      });
       return null;
     }
     
@@ -101,6 +111,19 @@ const useBlockchain = () => {
       // Generate random result
       const result = generateSlotMachineResult(betAmount);
       
+      // Log spin transaction in localStorage for leaderboard
+      const spinHistory = JSON.parse(localStorage.getItem('spin_history') || '[]');
+      spinHistory.push({
+        timestamp: Date.now(),
+        betAmount,
+        result: {
+          symbols: result.symbols,
+          multiplier: result.multiplier
+        },
+        betKey: result.betKey
+      });
+      localStorage.setItem('spin_history', JSON.stringify(spinHistory));
+      
       return result;
     } catch (error) {
       console.error("Error with blockchain transaction:", error);
@@ -123,12 +146,21 @@ const useBlockchain = () => {
       return false;
     }
     
+    if (!isConnected) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Ye need to connect yer wallet to claim yer treasure!",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
     setIsProcessing(true);
     
     try {
       toast({
         title: "Processing Claim",
-        description: "Claiming winnings on the blockchain...",
+        description: "Claiming winnings on the VOI blockchain...",
       });
       
       // Simulate blockchain confirmation delay

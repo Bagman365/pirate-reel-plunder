@@ -9,6 +9,7 @@ interface WalletContextType {
   connect: () => Promise<void>;
   disconnect: () => void;
   updateBalance: (amount: number) => void;
+  signLogicSigTransaction: (txnData: any) => Promise<string | null>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -48,29 +49,35 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   }, [isConnected, address, balance]);
   
-  // Connect wallet function - simplified version for demo
+  // Connect wallet function - simulated for VOI/Kibisis compatibility
   const connect = async () => {
     try {
-      // In a real implementation, we would connect to an actual wallet here
-      // For demo purposes, we're generating a fake address
-      const mockAddress = `0x${Array(40).fill(0).map(() => 
+      // In a real implementation, this would connect to VOI/Kibisis
+      // For now, we're generating a fake VOI address
+      const mockAddress = `voi${Array(56).fill(0).map(() => 
         Math.floor(Math.random() * 16).toString(16)).join('')}`;
       
       setAddress(mockAddress);
       setIsConnected(true);
       
       toast({
-        title: "Wallet Connected",
-        description: "Successfully connected to blockchain wallet",
+        title: "Ahoy! Wallet Connected",
+        description: "Successfully connected to yer blockchain treasure chest",
       });
       
+      // Record connection in localStorage for leaderboard/stats
+      localStorage.setItem('wallet_last_connected', new Date().toISOString());
+      
+      return mockAddress;
     } catch (error) {
       console.error("Error connecting wallet:", error);
       toast({
-        title: "Connection Failed",
+        title: "Shiver me timbers!",
         description: "Failed to connect wallet",
         variant: "destructive",
       });
+      
+      return null;
     }
   };
   
@@ -83,7 +90,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     
     toast({
       title: "Wallet Disconnected",
-      description: "Wallet has been disconnected",
+      description: "Ye have cut ties with yer treasure chest",
     });
   };
   
@@ -96,6 +103,49 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     });
   };
   
+  // Simulate signing a logic signature transaction
+  // This will be replaced with actual VOI blockchain integration in the future
+  const signLogicSigTransaction = async (txnData: any): Promise<string | null> => {
+    if (!isConnected || !address) {
+      toast({
+        title: "No Wallet Connected",
+        description: "Connect yer wallet to sign transactions",
+        variant: "destructive",
+      });
+      return null;
+    }
+    
+    try {
+      // Simulate transaction delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Generate mock transaction ID
+      const txId = `TX_${Date.now()}_${Math.floor(Math.random() * 1000000)}`;
+      
+      // Store transaction in localStorage for history/leaderboard
+      const txHistory = JSON.parse(localStorage.getItem('wallet_tx_history') || '[]');
+      txHistory.push({
+        txId,
+        type: txnData.type || 'spin',
+        timestamp: Date.now(),
+        address,
+        data: txnData
+      });
+      localStorage.setItem('wallet_tx_history', JSON.stringify(txHistory));
+      
+      console.log("Transaction signed:", txId, txnData);
+      return txId;
+    } catch (error) {
+      console.error("Failed to sign transaction:", error);
+      toast({
+        title: "Transaction Failed",
+        description: "Failed to sign the transaction",
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
+  
   // Provide wallet context to children
   return (
     <WalletContext.Provider value={{
@@ -104,7 +154,8 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       isConnected,
       connect,
       disconnect,
-      updateBalance
+      updateBalance,
+      signLogicSigTransaction
     }}>
       {children}
     </WalletContext.Provider>

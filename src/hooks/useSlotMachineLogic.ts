@@ -25,7 +25,7 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
   const { playSpinSound, playWinSound, playLoseSound } = useSlotMachineAudio();
   
   // Wallet integration
-  const { isConnected, balance } = useWallet();
+  const { isConnected, balance, signLogicSigTransaction } = useWallet();
   
   // Blockchain integration
   const { spinSlotMachine, claimWinnings, isProcessing } = useBlockchain();
@@ -73,8 +73,8 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
     // Check if wallet is connected
     if (!isConnected) {
       toast({
-        title: "Wallet Not Connected",
-        description: "Connect your wallet to play the slot machine!",
+        title: "⚓ Ahoy, matey!",
+        description: "Connect yer wallet to spin for treasure!",
         variant: "destructive"
       });
       return;
@@ -106,6 +106,26 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
     setShowWin(false);
     setCurrentBetKey(null);
     setWinAmount(0);
+    
+    // Sign the transaction on-chain
+    const txData = {
+      type: 'slot_spin',
+      betAmount: betAmount,
+      timestamp: Date.now()
+    };
+    
+    const txSignature = await signLogicSigTransaction(txData);
+    
+    if (!txSignature) {
+      setSpinning(false);
+      setCanSpin(true);
+      toast({
+        title: "Transaction Failed",
+        description: "Failed to sign the spin transaction",
+        variant: "destructive"
+      });
+      return;
+    }
     
     // Call for spin result through blockchain
     const result = await spinSlotMachine(betAmount);
@@ -150,10 +170,39 @@ export const useSlotMachineLogic = (onWin: (amount: number) => void) => {
   const handleClaim = async () => {
     if (!currentBetKey || isProcessing || winAmount <= 0) return;
     
+    // Sign the claim transaction
+    const txData = {
+      type: 'claim_winnings',
+      betKey: currentBetKey,
+      amount: winAmount,
+      timestamp: Date.now()
+    };
+    
+    const txSignature = await signLogicSigTransaction(txData);
+    
+    if (!txSignature) {
+      toast({
+        title: "Transaction Failed",
+        description: "Failed to sign the claim transaction",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     const success = await claimWinnings(currentBetKey, winAmount);
     if (success) {
       setCurrentBetKey(null);
       setWinAmount(0);
+      
+      // Record claim in localStorage for leaderboard
+      const claims = JSON.parse(localStorage.getItem('claims_history') || '[]');
+      claims.push({
+        betKey: currentBetKey,
+        amount: winAmount,
+        timestamp: Date.now(),
+        txId: txSignature
+      });
+      localStorage.setItem('claims_history', JSON.stringify(claims));
     }
   };
 
