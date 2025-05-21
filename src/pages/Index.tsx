@@ -27,20 +27,24 @@ const Index = () => {
       <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
       <PirateAnimatedBackground />
       
-      {/* Content overlay */}
-      <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col">
-        {/* Header */}
-        <Header />
-        
-        {/* Wallet Connection */}
+      {/* Content overlay - adjusted spacing with specific max-width for better central focus */}
+      <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col py-4">
+        {/* Header with added margin for spacing */}
         <div className="mb-4">
-          <WalletConnect />
+          <Header />
         </div>
         
-        {/* Main game area */}
+        {/* Main game area with centered content and proper spacing */}
         <main className="flex-1 flex flex-col items-center">
-          {/* Slot Machine */}
-          <BlockchainSlotMachine onWin={handleWin} />
+          {/* Wallet Connection - moved inside main content area with proper spacing */}
+          <div className="w-full max-w-md mb-6">
+            <WalletConnect />
+          </div>
+          
+          {/* Slot Machine with max width constraint */}
+          <div className="w-full max-w-md mb-6">
+            <BlockchainSlotMachine onWin={handleWin} />
+          </div>
         </main>
         
         {/* Footer with navigation */}

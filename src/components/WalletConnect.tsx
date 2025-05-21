@@ -79,16 +79,17 @@ const WalletConnect = () => {
   }
 
   return (
-    <div className="my-2">
+    <div className="flex justify-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button 
               onClick={() => setIsOpen(!isOpen)}
-              className="w-full bg-pirate-gold hover:bg-amber-500 text-pirate-navy font-bold py-2 px-4 rounded border-2 border-pirate-darkwood font-pirata"
+              className="bg-pirate-gold hover:bg-amber-500 text-pirate-navy font-bold py-2 px-4 rounded border-2 border-pirate-darkwood font-pirata"
+              size="sm"
             >
               <Wallet className="mr-2 h-5 w-5" />
-              Connect Pirate Wallet
+              Connect Wallet
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -98,7 +99,7 @@ const WalletConnect = () => {
       </TooltipProvider>
 
       {isOpen && (
-        <div className="mt-2 border border-pirate-gold rounded-md p-3 bg-pirate-navy/90 backdrop-blur-sm shadow-lg">
+        <div className="absolute mt-10 z-50 border border-pirate-gold rounded-md p-3 bg-pirate-navy/90 backdrop-blur-sm shadow-lg">
           <div className="text-pirate-gold font-pirata mb-2 flex items-center">
             <Anchor className="mr-2 h-5 w-5" />
             <span>Select a Treasure Chest</span>
@@ -123,6 +124,6 @@ const WalletConnect = () => {
       )}
     </div>
   );
-};
+}
 
 export default WalletConnect;

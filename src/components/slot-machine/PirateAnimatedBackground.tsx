@@ -14,10 +14,10 @@ const PirateAnimatedBackground = () => {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Left side pirate image - larger and better positioned */}
+      {/* Left side pirate image - larger and better positioned with padding */}
       <div 
-        className={`absolute left-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'}`}
-        style={{ width: '28vw', maxWidth: '400px' }}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
+        style={{ width: '25vw', maxWidth: '350px' }}
       >
         <img 
           src="/lovable-uploads/e843e5e7-ed11-4afe-bd2d-5e0a849b3c22.png" 
@@ -26,10 +26,10 @@ const PirateAnimatedBackground = () => {
         />
       </div>
       
-      {/* Right side slot machine image - larger and better positioned */}
+      {/* Right side slot machine image - larger and better positioned with padding */}
       <div 
-        className={`absolute right-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'}`}
-        style={{ width: '28vw', maxWidth: '400px' }}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 hidden md:block transition-opacity duration-1000 ${isVisible ? 'opacity-80' : 'opacity-0'} px-4`}
+        style={{ width: '25vw', maxWidth: '350px' }}
       >
         <img 
           src="/lovable-uploads/97409236-4d82-4f80-81e6-b865eea29cb8.png" 
