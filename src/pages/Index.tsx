@@ -23,8 +23,9 @@ const Index = () => {
   
   return (
     <div className="min-h-screen relative overflow-hidden flex flex-col">
-      {/* Empty background setup */}
+      {/* Background with pirate theme */}
       <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
+      <PirateAnimatedBackground />
       
       {/* Content overlay */}
       <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">

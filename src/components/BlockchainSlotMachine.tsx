@@ -60,7 +60,7 @@ const BlockchainSlotMachine = ({ onWin }: BlockchainSlotMachineProps) => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="relative w-full max-w-md mx-auto z-20">
       {/* Win animations handler */}
       <WinAnimationHandler 
         showWin={showWin} 
