@@ -117,4 +117,25 @@
     position: absolute;
     z-index: 30;
   }
+  
+  /* New animation for raining coins */
+  .coin-animation {
+    animation: coin-fall linear forwards;
+    top: -50px;
+  }
+  
+  @keyframes coin-fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.8;
+    }
+    10% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(calc(100vh + 100px)) rotate(720deg);
+      opacity: 0;
+    }
+  }
 }
+

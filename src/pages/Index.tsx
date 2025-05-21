@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import BlockchainSlotMachine from '../components/BlockchainSlotMachine';
 import WalletConnect from '../components/WalletConnect';
 import GameFooter from '../components/GameFooter';
-import PirateAnimatedBackground from '../components/slot-machine/PirateAnimatedBackground';
+import RainingCoins from '../components/animations/RainingCoins';
 
 // Main game component
 const Index = () => {
@@ -25,6 +25,9 @@ const Index = () => {
     <div className="min-h-screen relative overflow-hidden flex flex-col">
       {/* Background with pirate theme */}
       <div className="fixed inset-0 z-0 bg-pirate-navy"></div>
+      
+      {/* Raining coins background animation */}
+      <RainingCoins />
       
       {/* Content overlay - adjusted spacing with specific max-width for better central focus */}
       <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col py-4">
