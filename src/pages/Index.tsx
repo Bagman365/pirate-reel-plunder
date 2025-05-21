@@ -28,7 +28,7 @@ const Index = () => {
       <PirateAnimatedBackground />
       
       {/* Content overlay */}
-      <div className="relative z-10 flex-1 container max-w-md mx-auto px-4 flex flex-col">
+      <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col">
         {/* Header */}
         <Header />
         
@@ -38,7 +38,7 @@ const Index = () => {
         </div>
         
         {/* Main game area */}
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col items-center">
           {/* Slot Machine */}
           <BlockchainSlotMachine onWin={handleWin} />
         </main>
