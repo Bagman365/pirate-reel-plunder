@@ -85,10 +85,10 @@ const WalletConnect = () => {
           <TooltipTrigger asChild>
             <Button 
               onClick={() => setIsOpen(!isOpen)}
-              className="bg-pirate-darkwood hover:bg-amber-800 text-pirate-gold font-bold py-2 px-4 rounded border-2 border-pirate-gold font-pirata w-full"
-              size="sm"
+              className="bg-pirate-darkwood hover:bg-amber-800 text-pirate-gold font-bold py-3 px-6 rounded-lg border-2 border-pirate-gold font-pirata text-xl w-full h-14 transition-all duration-300 shadow-md hover:shadow-amber-500/30"
+              size="lg"
             >
-              <Wallet className="mr-2 h-5 w-5" />
+              <Wallet className="mr-2 h-6 w-6" />
               Connect Wallet
             </Button>
           </TooltipTrigger>
@@ -99,22 +99,22 @@ const WalletConnect = () => {
       </TooltipProvider>
 
       {isOpen && (
-        <div className="absolute mt-10 z-50 border border-pirate-gold rounded-md p-3 bg-pirate-navy/90 backdrop-blur-sm shadow-lg">
-          <div className="text-pirate-gold font-pirata mb-2 flex items-center">
+        <div className="absolute mt-16 z-50 border-2 border-pirate-gold rounded-lg p-4 bg-pirate-navy/95 backdrop-blur-sm shadow-lg min-w-[220px]">
+          <div className="text-pirate-gold font-pirata mb-3 flex items-center">
             <Anchor className="mr-2 h-5 w-5" />
-            <span>Select a Treasure Chest</span>
+            <span className="text-lg">Select a Treasure Chest</span>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             <Button 
               onClick={handleConnect}
-              className="w-full justify-start bg-pirate-darkwood hover:bg-pirate-darkwood/80 text-pirate-gold font-pirata"
+              className="w-full justify-start bg-pirate-darkwood hover:bg-pirate-darkwood/80 text-pirate-gold font-pirata py-3 h-12"
             >
               <img src="/lovable-uploads/502363b9-38cb-4138-b4ef-cf0b6c6838bb.png" className="w-5 h-5 mr-2" alt="VOI" />
               VOI Wallet
             </Button>
             <Button 
               onClick={handleConnect}
-              className="w-full justify-start bg-pirate-darkwood hover:bg-pirate-darkwood/80 text-pirate-gold font-pirata"
+              className="w-full justify-start bg-pirate-darkwood hover:bg-pirate-darkwood/80 text-pirate-gold font-pirata py-3 h-12"
             >
               <img src="/lovable-uploads/89a339d9-1017-4ae2-819a-a6fae8abf6f1.png" className="w-5 h-5 mr-2" alt="Kibisis" />
               Kibisis
