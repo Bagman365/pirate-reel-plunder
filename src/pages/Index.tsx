@@ -30,7 +30,7 @@ const Index = () => {
       <RainingCoins />
       
       {/* Content overlay - adjusted spacing with specific max-width for better central focus */}
-      <div className="relative z-10 flex-1 container mx-auto px-4 flex flex-col py-4">
+      <div className="relative z-20 flex-1 container mx-auto px-4 flex flex-col py-4">
         {/* Header with added margin for spacing */}
         <div className="mb-4">
           <Header />

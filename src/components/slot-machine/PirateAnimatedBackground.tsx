@@ -13,12 +13,12 @@ const PirateAnimatedBackground = () => {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
       {/* Background pirate treasure image - spanning the entire background */}
       <div 
         className={`absolute inset-0 transition-opacity duration-1000 ${isVisible ? 'opacity-30' : 'opacity-0'}`}
         style={{ 
-          zIndex: -1
+          zIndex: 5
         }}
       >
         <img 
