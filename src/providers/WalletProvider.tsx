@@ -6,7 +6,7 @@ interface WalletContextType {
   address: string | null;
   balance: number;
   isConnected: boolean;
-  connect: () => Promise<void>;
+  connect: () => Promise<string | null>;  // Updated return type to match implementation
   disconnect: () => void;
   updateBalance: (amount: number) => void;
   signLogicSigTransaction: (txnData: any) => Promise<string | null>;
@@ -50,7 +50,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   }, [isConnected, address, balance]);
   
   // Connect wallet function - simulated for VOI/Kibisis compatibility
-  const connect = async () => {
+  const connect = async (): Promise<string | null> => {  // Updated return type here too
     try {
       // In a real implementation, this would connect to VOI/Kibisis
       // For now, we're generating a fake VOI address
