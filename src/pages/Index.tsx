@@ -46,9 +46,10 @@ const Index = () => {
               />
             </div>
             
-            <div className="flex flex-col items-center w-full max-w-md">
+            {/* Center content column with consistent width */}
+            <div className="flex flex-col items-center w-full max-w-[480px]">
               {/* Wallet Connection section - matched width with game container */}
-              <div className="w-full mb-6">
+              <div className="w-full mb-4 mt-4">
                 <WalletConnect />
               </div>
               

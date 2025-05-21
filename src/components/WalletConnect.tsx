@@ -31,7 +31,7 @@ const WalletConnect = () => {
 
   if (isConnected) {
     return (
-      <div className="bg-pirate-navy/80 backdrop-blur-sm border border-pirate-gold rounded-lg p-3 shadow-lg transition-all duration-300 hover:border-amber-400">
+      <div className="bg-pirate-navy/80 backdrop-blur-sm border border-pirate-gold rounded-lg p-3 shadow-lg transition-all duration-300 hover:border-amber-400 w-full">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2 text-pirate-gold">
             <Wallet className="h-5 w-5 animate-pulse" />
@@ -79,13 +79,13 @@ const WalletConnect = () => {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center w-full">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button 
               onClick={() => setIsOpen(!isOpen)}
-              className="bg-pirate-gold hover:bg-amber-500 text-pirate-navy font-bold py-2 px-4 rounded border-2 border-pirate-darkwood font-pirata"
+              className="bg-pirate-darkwood hover:bg-amber-800 text-pirate-gold font-bold py-2 px-4 rounded border-2 border-pirate-gold font-pirata w-full"
               size="sm"
             >
               <Wallet className="mr-2 h-5 w-5" />
@@ -124,6 +124,6 @@ const WalletConnect = () => {
       )}
     </div>
   );
-}
+};
 
 export default WalletConnect;
